@@ -21,7 +21,7 @@ async function bootstrap() {
 
  app.use(morgan('combined')); // Logging middleware for HTTP requests
 
-//  Create a global pipe for all routes in the application for request body parsing and validation.
+//  Create a global pipe for request body validation.
 app.useGlobalPipes(
   new ValidationPipe({
     transform: true,
@@ -30,6 +30,10 @@ app.useGlobalPipes(
   })
 );
 
-  await app.listen(process.env.PORT ?? 3000);
+app.setGlobalPrefix('api'); // Set a global prefix for all routes
+const port = process.env.PORT ?? 8000; // Use the PORT environment variable or default to 8000
+ await app.listen(port);
+ logger.log(`Server listening at http://localhost:${port}/api`); // Log the URL where the application is running
+
 }
 bootstrap();
