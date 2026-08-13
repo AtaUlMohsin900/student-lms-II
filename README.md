@@ -15,8 +15,8 @@ cd backend
 ### Dependencies
 
 ```bash
-npm i @nestjs/config
-# Config module (common, core, platform-express nest new me already hote hain)
+npm i @nestjs/config 
+# Config module (common, core, platform-express nest new me already hote hain) If config files are already installed so don't need to again installation.
 
 
 nest g res users --no-spec
