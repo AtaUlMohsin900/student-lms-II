@@ -32,7 +32,10 @@ npm i bcryptjs
 # Password hashing
 
 npm i class-transformer class-validator joi express-validator
-# Validation – DTOs, schemas, request validation
+# Validation – DTOs, schemas, request 
+
+npm i helmet morgan cors
+# Helmet is middleware, morgan use for view loger with detail and cors for origin issue when we initialize request from another domian.
 
 npm i cloudinary multer multer-storage-cloudinary
 # File upload – images, videos (Cloudinary)
@@ -89,3 +92,7 @@ npm i react-player
 # Video player
 ```
 
+```
+# Don't forget my github profile ataulmohsin900
+
+```
