@@ -36,4 +36,4 @@ const port = process.env.PORT ?? 8000; // Use the PORT environment variable or d
  logger.log(`Server listening at http://localhost:${port}/api`); // Log the URL where the application is running
 
 }
-bootstrap();
+bootstrap(); // Call the bootstrap function to start the application
