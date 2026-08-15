@@ -14,9 +14,9 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432', 10),
-  username: process.env.DB_USERNAME || 'dheeraj',
+  username: process.env.DB_USERNAME || 'ataulmohsin',
   password: process.env.DB_PASSWORD || 'root',
-  database: process.env.DB_NAME || 'lms_development',
+  database: process.env.DB_NAME || 'lms-student',
   entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [join(__dirname, '../migrations/*{.ts,.js}')],
   // synchronize: false = TypeORM auto table create/alter NAHI karega. Migrations use karo - production safe.

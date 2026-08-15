@@ -24,3 +24,16 @@ import { ConfigService } from '@nestjs/config/dist/config.service';
   providers: [AppService],
 })
 export class AppModule {}
+function buildTypeOrmconfig(configService: ConfigService<Record<string | symbol, unknown>, false>): import("@nestjs/typeorm").TypeOrmModuleOptions | Promise<import("@nestjs/typeorm").TypeOrmModuleOptions> {
+  return {
+    type: 'postgres',
+    host: configService.get('DB_HOST'),
+    port: configService.get('DB_PORT'),
+    username: configService.get('DB_USERNAME'),
+    password: configService.get('DB_PASSWORD'),
+    database: configService.get('DB_NAME'),
+    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    synchronize: configService.get('NODE_ENV') !== 'production',
+  };
+}
+
