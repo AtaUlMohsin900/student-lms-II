@@ -6,6 +6,7 @@ import { envValidationSchema } from './config/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { UsersModule } from './users/users.module';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { UsersModule } from './users/users.module';
     }),
     
     UsersModule,
+    
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
