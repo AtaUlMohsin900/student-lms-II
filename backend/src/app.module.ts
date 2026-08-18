@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { envValidationSchema } from './config/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 import { ConfigService } from '@nestjs/config/dist/config.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { ConfigService } from '@nestjs/config/dist/config.service';
       useFactory: (configService: ConfigService) =>
         buildTypeOrmconfig(configService)
     }),
+    
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
