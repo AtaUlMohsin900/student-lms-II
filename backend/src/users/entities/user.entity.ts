@@ -1,8 +1,9 @@
-import { BeforeInsert, BeforeUpdate, Column, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole, UserStatus } from "../enums/users.enms";
 import { randomUUID } from "crypto";
 
-export class User {
+@Entity({name: 'users'})
+    export class User {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
