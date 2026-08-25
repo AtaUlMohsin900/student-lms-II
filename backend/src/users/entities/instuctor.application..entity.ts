@@ -1,100 +1,102 @@
 import { randomUUID } from "crypto";
-import { BeforeInsert, 
-    BeforeUpdate, 
-    Column, 
-    Entity, 
+import {
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    Entity,
     PrimaryGeneratedColumn,
     Unique
- } from "typeorm";
+} from "typeorm";
+import { InstructorApplicationStatus } from "../enums/instructor.enmus";
 
 
-@Entity({name: 'instructor_applications'})
-@Unique('instructor_application_user_unique',['userId'])
-    export class InstructorApplicationEntity {
+
+@Entity({ name: 'instructor_applications' })
+@Unique('instructor_application_user_unique', ['userId'])
+export class InstructorApplicationEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
     @BeforeInsert()
-    ensureInsertDefaults(){
-        if(!this.id){
+    ensureInsertDefaults() {
+        if (!this.id) {
             this.id = randomUUID();
         }
 
         const now = new Date();
-        if(!this.createdAt){
+        if (!this.createdAt) {
             this.createdAt = now;
         }
-        if(!this.updatedAt){
+        if (!this.updatedAt) {
             this.updatedAt = now;
         }
     }
     @BeforeUpdate()
-    touchUpdateAt(){
+    touchUpdateAt() {
         this.updatedAt = new Date();
     }
 
-    @Column({name:'user_id', type:'uuid'})
-    userId!: string;   
- 
+    @Column({ name: 'user_id', type: 'uuid' })
+    userId!: string;
+
     @Column({
-        name:'password_hash', 
-        type:'varchar', 
-        length: 255, 
+        name: 'password_hash',
+        type: 'varchar',
+        length: 255,
         nullable: true
     })
     passwordHash!: string | null;
-    
-    @Column({type:'enum', enum: InstructorApplicationStatus, default: InstructorApplicationStatus.PENDING})
-    status!: InstructorApplicationStatus;
- 
-    
 
-    @Column({type:'text'})
+    @Column({ type: 'enum', enum: InstructorApplicationStatus, default: InstructorApplicationStatus.PENDING })
+    status!: InstructorApplicationStatus;
+
+
+
+    @Column({ type: 'text' })
     bio!: string | null;
 
-    @Column({name:'expertise_areas', type:'text', array: true, default: '{}' })
+    @Column({ name: 'expertise_areas', type: 'text', array: true, default: '{}' })
     expertiseAreas!: string | null;
 
-    @Column({type:'text', nullable: true})
+    @Column({ type: 'text', nullable: true })
     education!: string | null;
 
     @Column({
-        name:'portfolio_url', 
-        type:'varchar', 
-        length: 500, 
+        name: 'portfolio_url',
+        type: 'varchar',
+        length: 500,
         nullable: true
     })
     portfolioUrl!: string | null;
 
     @Column({
-        name:'linkedin_url', 
-        type:'varchar', 
-        length: 500, 
+        name: 'linkedin_url',
+        type: 'varchar',
+        length: 500,
         nullable: true
     })
     linkedinUrl!: string | null;
 
     @Column({
-        name:'github_url', 
-        type:'varchar', 
-        length: 500, 
+        name: 'github_url',
+        type: 'varchar',
+        length: 500,
         nullable: true
     })
     githubUrl!: string | null;
 
-    @Column({name: 'rejection_reason', type:'text', nullable: true})
+    @Column({ name: 'rejection_reason', type: 'text', nullable: true })
     rejectionReason!: string | null;
 
-    @Column({name:'reviewed_by', type:'uuid', nullable: true})
-    reviewedBy!: string | null;   
+    @Column({ name: 'reviewed_by', type: 'uuid', nullable: true })
+    reviewedBy!: string | null;
 
-    @Column({name:'reviewed_at', type:'timestemp', nullable: true})
-    reviewedAt!: Date | null; 
+    @Column({ name: 'reviewed_at', type: 'timestamp', nullable: true })
+    reviewedAt!: Date | null;
 
-    @Column({name:'created_at', type:'timestamp'})
+    @Column({ name: 'created_at', type: 'timestamp' })
     createdAt!: Date;
 
-    @Column({name:'updated_at', type:'timestamp'})
+    @Column({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
-}  
- 
+}
