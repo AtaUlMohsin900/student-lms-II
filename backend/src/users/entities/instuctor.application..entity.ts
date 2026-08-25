@@ -52,31 +52,45 @@ import { BeforeInsert,
     @Column({type:'text'})
     bio!: string | null;
 
-    @Column({name:'expertise_areas', type:'date', nullable: true})
+    @Column({name:'expertise_areas', type:'text', array: true, default: '{}' })
     expertiseAreas!: string | null;
 
+    @Column({type:'text', nullable: true})
+    education!: string | null;
+
     @Column({
-        name:'google_id', 
+        name:'portfolio_url', 
         type:'varchar', 
-        length: 255,
-        unique: true, 
+        length: 500, 
         nullable: true
     })
-    googleId!: string | null;
+    portfolioUrl!: string | null;
 
-    @Column({name:'email_verified', type:'boolean', default: false})
-    emailVerified!: boolean;
+    @Column({
+        name:'linkedin_url', 
+        type:'varchar', 
+        length: 500, 
+        nullable: true
+    })
+    linkedinUrl!: string | null;
 
-    @Column({name:'last_login', type:'timestamp', nullable: true})
-    lastLogin!: Date | null;
+    @Column({
+        name:'github_url', 
+        type:'varchar', 
+        length: 500, 
+        nullable: true
+    })
+    githubUrl!: string | null;
 
-    @Column({name:'last_learning_date', type:'date', nullable: true})
-    lastLearningDate!: string | null;
+    @Column({name: 'rejection_reason', type:'text', nullable: true})
+    rejectionReason!: string | null;
 
-    @Column({name:'current_streak', type:'int', default: 0})
-    currentStreak!: number;
+    @Column({name:'reviewed_by', type:'uuid', nullable: true})
+    reviewedBy!: string | null;   
 
-    
+    @Column({name:'reviewed_at', type:'timestemp', nullable: true})
+    reviewedAt!: Date | null; 
+
     @Column({name:'created_at', type:'timestamp'})
     createdAt!: Date;
 
