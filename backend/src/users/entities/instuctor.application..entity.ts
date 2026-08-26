@@ -4,10 +4,13 @@ import {
     BeforeUpdate,
     Column,
     Entity,
+    JoinColumn,
+    OneToOne,
     PrimaryGeneratedColumn,
     Unique
 } from "typeorm";
 import { InstructorApplicationStatus } from "../enums/instructor.enmus";
+import { UserEntity } from "./user.entity";
 
 
 
@@ -99,4 +102,8 @@ export class InstructorApplicationEntity {
 
     @Column({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
+    @OneToOne(() => UserEntity, (user) => user.instructorApplication)
+    @JoinColumn({ name: 'user_id' })
+    applicant?: UserEntity
+
 }
