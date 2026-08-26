@@ -8,4 +8,8 @@ export class InstructorApplicationDto {
     @IsString({ each: true })
     expertiseAreas?: string[]
 
+    @IsOptional()
+    @IsString()
+    education?: string
+
 } 

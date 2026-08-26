@@ -64,6 +64,11 @@ export class InstructorApplicationEntity {
     @Column({ type: 'text', nullable: true })
     education!: string | null;
 
+    @Column({ name: 'experience_years', type: 'int', nullable: true })
+    experienceYears!: number | null;
+
+
+
     @Column({
         name: 'portfolio_url',
         type: 'varchar',
