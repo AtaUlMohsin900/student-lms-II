@@ -10,6 +10,7 @@ export class InstructorApplicationDto {
 
     @IsOptional()
     @IsString()
+    @Transform(({ value }) => (value === '' ? null : value))
     education?: string
 
 } 
