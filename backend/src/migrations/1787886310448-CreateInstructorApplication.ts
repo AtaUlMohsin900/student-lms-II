@@ -1,16 +1,15 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsers1787798489413 implements MigrationInterface {
+export class CreateInstructorApplication1787886310448 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TYPE "users_role_enum"AS ENUM('supper', 'instructor', 'student')`)
-        await queryRunner.query(`CREATE TYPE "users_status_enum"AS ENUM('active', 'pending', 'suspended','banned')`)
+        await queryRunner.query(`CREATE TYPE "InstructorApplications_status_enum"AS ENUM('pending', 'approved', 'rejected')`)
         await queryRunner.createTable(
             new Table({
-                name: 'users',
+                name: 'InstructorApplications',
                 columns: [
                     { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()' },
-                    { name: 'name', type: 'varchar', length: '100' },
+                    { name: 'user_id', type: 'uuid', isUnique: true },
                     { name: 'email', type: 'varchar', length: '255', isUnique: true },
                     { name: 'password_hash', type: 'varchar', length: '255', isNullable: true },
                     { name: 'status', type: 'users_status_enum', default: 'pending' },
@@ -25,12 +24,6 @@ export class CreateUsers1787798489413 implements MigrationInterface {
                     { name: 'created_at', type: 'timestamp', default: 'now()' },
                     { name: 'updated_at', type: 'timestamp', default: 'now()' },
 
-
-
-
-
-
-
                 ]
             }),
             true
@@ -38,7 +31,7 @@ export class CreateUsers1787798489413 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('users', true);
+        await queryRunner.dropTable('InstructorApplications', true);
         await queryRunner.query(`DROP TYPE IF EXISTS "users_role_enum"`);
         await queryRunner.query(`DROP TYPE IF EXISTS "users_status_enum"`);
     }
