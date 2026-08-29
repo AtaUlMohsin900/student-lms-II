@@ -10,17 +10,17 @@ export class CreateInstructorApplication1787886310448 implements MigrationInterf
                 columns: [
                     { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()' },
                     { name: 'user_id', type: 'uuid', isUnique: true },
-                    { name: 'email', type: 'varchar', length: '255', isUnique: true },
-                    { name: 'password_hash', type: 'varchar', length: '255', isNullable: true },
-                    { name: 'status', type: 'users_status_enum', default: 'pending' },
-                    { name: 'profile_picture_url', type: 'varchar', length: '500', isNullable: true },
-                    { name: 'phone', type: 'varchar', length: "20", isNullable: true },
-                    { name: 'date_of_birth', type: 'date', isNullable: true },
-                    { name: 'google_id', type: 'varchar', length: "255", isUnique: true, isNullable: true },
-                    { name: 'email_verified', type: 'boolean', default: false },
-                    { name: 'last_login', type: 'timestamp', isNullable: true },
-                    { name: 'last_learning', type: 'date', isNullable: true },
-                    { name: 'current_streak', type: 'int', default: 0 },
+                    { name: 'status', type: 'InstructorApplications_status_enum', default: 'pending' },
+                    { name: 'bio', type: 'text'},
+                    { name: 'expertise_areas', type: 'text',isArray: true, default: "'{}'" },
+                    { name: 'experience_years', type: 'int', isNullable: true },
+                    { name: 'education', type: 'text', isNullable: true},
+                    { name: 'portfolio_url', type: 'varchar', length: '500', isNullable: true },
+                    { name: 'linkedin_url', type: 'varchar', length: '500', isNullable: true },
+                    { name: 'github_url', type: 'varchar', length: '500', isNullable: true },
+                    { name: 'rejection_reason', type: 'text', isNullable: true },
+                    { name: 'reviewed_by', type: 'uuid', isNullable: true },
+                    { name: 'reviewed_at', type: 'timestamp', isNullable: true },
                     { name: 'created_at', type: 'timestamp', default: 'now()' },
                     { name: 'updated_at', type: 'timestamp', default: 'now()' },
 
@@ -28,6 +28,16 @@ export class CreateInstructorApplication1787886310448 implements MigrationInterf
             }),
             true
         );
+        await queryRunner.createForeignKey(
+            'Instructor_applications',
+            new TableForeignKey({
+                columnNames:['user_id'],
+                referencedTableName:'users',
+                referencedColumnNames:['id'],
+                 
+
+            })
+        )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
