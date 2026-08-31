@@ -4,6 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { query } from "express-validator";
 import { string } from "joi";
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -13,30 +14,39 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         private readonly authService: AuthService,
 
     ) {
-        Super({
+        super({
             clientID: configService.get<string>('GOOGLE_CLIENT_ID', ''),
-            lientID: configService.get<string>('GOOGLE_CLIENT_SECRE', ''),
+            clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET', ''),
             callbackURL: configService.get<string>('GOOGLE_CALLBACK_URL', ''),
-            Scope: ['profile', 'email'],
+            scope: ['profile', 'email'],
             passReqToCallback: true,
 
 
 
         });
     }
-    async validate() {
-        req: { query ?: { state?: string } },
+    async validate(
+        req: { query?: { state?: string } },
         accessToken: string,
-            refreshToken: string,
-                profile: {
+        refreshToken: string,
+        profile: {
             id: string,
-                dispayName ?: { familyName: string, givenName: string },
-                emails: [{ value: string }],
-                    photos: [{ value: string }]
-        }
+            dispayName?: string;
+            emails?: Array<{ value: string }>;
+            photos?: Array<{ value: string }>;
 
+
+        },
+        done: VerifyCallback
+
+    ) {
+        try {
+            role: 'student' | 'instructor' | undefined
+            const stateStr = req?.query?.state;
+        } catch (error) {
+
+        }
 
     }
 
 }
-
