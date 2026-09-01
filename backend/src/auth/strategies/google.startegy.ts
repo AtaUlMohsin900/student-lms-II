@@ -41,11 +41,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
     ) {
         try {
-            role: 'student' | 'instructor' | undefined
+            let role: 'student' | 'instructor' | undefined
             const stateStr = req?.query?.state;
             if (stateStr) {
                 try {
                     const parsed = JSON.parse(stateStr);
+                    if (parsed.role === 'student' || parsed.role === 'instructor') {
+                        role = parsed.role;
+                    }
 
                 } catch (error) {
                     // ignore vaild state
@@ -59,3 +62,4 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         }
 
     }
+}
