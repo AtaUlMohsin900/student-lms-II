@@ -1,27 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { UserEntity } from '../users/entities/user.entity';
+import { UserEntity } from '../../src/user/entities/user.entity';
+import { InstuctorApplicationEntity } from '../../src/InstuctorApplicationEntity';
+import { Repository } from 'typeorm';
+
+
+import { SignupDto } from './dto/signup.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    @InjectRepository(InstuctorApplicationEntity)
+    private readonly applicationRepository: Repository<InstuctorApplicationEntity>,
+    private readonly jwtService: JwtService,
+  ) { }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+  async signup(dto: SignupDto) {
+    // step 1: Restrict for dubling email accounts.
+    const existingUser = await this.userRepository.findOne({
+      where: { email: dto.mail },
+    })
+    if (existingUser) {
+      throw new ConflictExeption('Email already exists');
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }
