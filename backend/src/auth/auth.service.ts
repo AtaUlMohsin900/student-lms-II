@@ -1,13 +1,12 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { UserEntity } from '../../src/user/entities/user.entity';
-import { InstuctorApplicationEntity } from '../../src/InstuctorApplicationEntity';
-import { Repository } from 'typeorm';
-
-
 import { SignupDto } from './dto/signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '../users/entities/user.User.entity';
+import { InstuctorApplicationEntity } from '../../src/InstuctorApplicationEntity';
+import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'node_modules/bcryptjs';
+import { UserRole, UserStatus } from 'src/users/enums/users.enms';
 
 @Injectable()
 export class AuthService {
@@ -27,10 +26,17 @@ export class AuthService {
     })
     if (existingUser) {
       throw new ConflictException('Email already exists');
-
     }
-    const passwordhash = await bcrypt.hash(dto.password, 12);
-    return passwordhash;
+    const passwordHash = await bcrypt.hash(dto.password, 12);
+    const user = this.userRepository.create({
+      name: dto.name,
+      email: dto.email,
+      password: passwordHash,
+      role: dto.role || UserRole.STUDENT,
+      status: UserStatus.ACTIVE,
+      emailVerified: true
+    })
+
 
   }
 }
