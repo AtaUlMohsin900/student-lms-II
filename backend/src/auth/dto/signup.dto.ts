@@ -7,4 +7,6 @@ export class SignupDto {
     @IsString()
     @MinLength(6)
     password!: string;
+  role: import("c:/Users/ataulmohsin/Desktop/student-lms-II/backend/src/users/enums/users.enms").UserRole;
+  name: any;
 }

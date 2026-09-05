@@ -5,8 +5,9 @@ import { UserEntity } from '../users/entities/user.User.entity';
 import { InstuctorApplicationEntity } from '../../src/InstuctorApplicationEntity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import bcrypt from 'node_modules/bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { UserRole, UserStatus } from 'src/users/enums/users.enms';
+
 
 @Injectable()
 export class AuthService {
