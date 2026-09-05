@@ -37,6 +37,57 @@ export class AuthService {
       emailVerified: true
     })
 
+    const savedUser = await this.userRepository.save(user);
+    const token = await this.generateToken(savedUser);
+    return{
+      user: this.senitizeUser(savedUser);
+      token,
+    }
+  }
 
+ async login(dto: LoginDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: dto.email },
+    })
+    if (!user) {
+      throw new NotFondException('User not found please register');
+    }
+    if(user.status !== UserStatus.ACTIVE){
+      throw new UnauthorizedException('Your account is not active. Please contact with support team')
+    }
+
+    if(!user.passwordHash){
+      throw new UnauthorizedException('This account require social login')
+    }
+
+    const isValidPassword = await bcrypt.compare(
+      dto.password,
+      user.passwordHash
+    )
+    if(!isValidPassword){
+      throw new UnauthorizedException('Email or Password is incorrect')
+    }
+
+    user.lastlogin = new Date();
+    const savedUser = await this.userRepository.save(user);
+    const token = await this.generateToken(savedUser);
+    return{
+      user: this.senitizeUser(savedUser);
+      token,
+    }
+  }
+
+  private async generateToken(user:UserEntity){
+    return this.jwtService.signAsync({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      status: user.status
+    })
+  }
+
+  private senitizeUser(user:UserEntity) {
+    const {passwordHash,...userWithoutPassword} =user;
+    return userWithoutPassword;
   }
 }
