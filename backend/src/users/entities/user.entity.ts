@@ -8,7 +8,7 @@ import {
 import { UserRole, UserStatus } from "../enums/users.enms";
 import { randomUUID } from "crypto";
 import { OneToOne } from "typeorm";
-import { InstructorApplicationEntity } from "./instuctor.application..entity";
+import { InstructorApplicationEntity } from "./instuctor-application.entity";
 
 @Entity({ name: 'users' })
 export class UserEntity {

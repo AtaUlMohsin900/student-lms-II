@@ -9,6 +9,12 @@ import * as bcrypt from 'bcryptjs';
 import { UserRole, UserStatus } from 'src/users/enums/users.enms';
 import { LoginDto } from './dto/login.dto';
 
+export interface GoogleProfile {
+  id: string,
+  displayName?: string,
+  emails?: Array<{ value: string }>,
+  photos?: Array<{ value: string }>
+}
 
 @Injectable()
 export class AuthService {
@@ -16,8 +22,8 @@ export class AuthService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
 
-    @InjectRepository(InstuctorApplicationEntity)
-    private readonly applicationRepository: Repository<InstuctorApplicationEntity>,
+    @InjectRepository(InstructorApplicationEntity)
+    private readonly applicationRepository: Repository<InstructorApplicationEntity>,
     private readonly jwtService: JwtService,
   ) { }
 
@@ -33,18 +39,20 @@ export class AuthService {
     const user = this.userRepository.create({
       name: dto.name,
       email: dto.email,
-      password: passwordHash,
+      passwordHash,
       role: dto.role || UserRole.STUDENT,
       status: UserStatus.ACTIVE,
       emailVerified: true
-    })
+    });
 
     const savedUser = await this.userRepository.save(user);
     const token = await this.generateToken(savedUser);
     return {
-      user: this.senitizeUser(savedUser),
+      user: this.sanitizeUser(savedUser),
       token,
     }
+
+
   }
 
   async login(dto: LoginDto) {
@@ -70,23 +78,23 @@ export class AuthService {
       throw new UnauthorizedException('Email or Password is incorrect')
     }
 
-    user.lastlogin = new Date();
+    user.lastLogin = new Date();
     const savedUser = await this.userRepository.save(user);
     const token = await this.generateToken(savedUser);
     return {
-      user: this.senitizeUser(savedUser),
+      user: this.sanitizeUser(savedUser),
       token,
     }
   }
   async getCurrentUser(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['nstructorApplication'],
+      relations: { instructorApplication: true },
     })
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User not found or inactive');
     }
-    return this.senitizeUser(user);
+    return this.sanitizeUser(user);
   }
 
 
@@ -94,12 +102,12 @@ export class AuthService {
     return this.jwtService.signAsync({
       id: user.id,
       email: user.email,
-      role: user.role,
+      role: user.roll,
       status: user.status
     })
   }
 
-  private senitizeUser(user: UserEntity) {
+  private sanitizeUser(user: UserEntity) {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }

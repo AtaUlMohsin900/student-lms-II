@@ -1,12 +1,19 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, IsString, MinLength } from "class-validator";
+import { UserRole } from "src/users/enums/users.enms";
 
 export class SignupDto {
-    @IsEmail()
-    email!: string;
+  @IsString()
+  @MinLength(2)
+  name!: string;
 
-    @IsString()
-    @MinLength(6)
-    password!: string;
-  role: import("c:/Users/ataulmohsin/Desktop/student-lms-II/backend/src/users/enums/users.enms").UserRole;
-  name: any;
+  @IsEmail()
+  email!: string;
+
+  @IsString()
+  @MinLength(6)
+  password!: string;
+
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole;
 }
