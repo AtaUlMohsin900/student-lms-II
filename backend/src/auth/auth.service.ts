@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../users/entities/user.User.entity';
@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UserRole, UserStatus } from 'src/users/enums/users.enms';
+import { LoginDto } from './dto/login.dto';
 
 
 @Injectable()
@@ -40,24 +41,24 @@ export class AuthService {
 
     const savedUser = await this.userRepository.save(user);
     const token = await this.generateToken(savedUser);
-    return{
-      user: this.senitizeUser(savedUser);
+    return {
+      user: this.senitizeUser(savedUser),
       token,
     }
   }
 
- async login(dto: LoginDto) {
+  async login(dto: LoginDto) {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     })
     if (!user) {
-      throw new NotFondException('User not found please register');
+      throw new NotFoundException('User not found please register');
     }
-    if(user.status !== UserStatus.ACTIVE){
+    if (user.status !== UserStatus.ACTIVE) {
       throw new UnauthorizedException('Your account is not active. Please contact with support team')
     }
 
-    if(!user.passwordHash){
+    if (!user.passwordHash) {
       throw new UnauthorizedException('This account require social login')
     }
 
@@ -65,20 +66,31 @@ export class AuthService {
       dto.password,
       user.passwordHash
     )
-    if(!isValidPassword){
+    if (!isValidPassword) {
       throw new UnauthorizedException('Email or Password is incorrect')
     }
 
     user.lastlogin = new Date();
     const savedUser = await this.userRepository.save(user);
     const token = await this.generateToken(savedUser);
-    return{
-      user: this.senitizeUser(savedUser);
+    return {
+      user: this.senitizeUser(savedUser),
       token,
     }
   }
+  async getCurrentUser(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['nstructorApplication'],
+    })
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return this.senitizeUser(user);
+  }
 
-  private async generateToken(user:UserEntity){
+
+  private async generateToken(user: UserEntity) {
     return this.jwtService.signAsync({
       id: user.id,
       email: user.email,
@@ -87,8 +99,8 @@ export class AuthService {
     })
   }
 
-  private senitizeUser(user:UserEntity) {
-    const {passwordHash,...userWithoutPassword} =user;
+  private senitizeUser(user: UserEntity) {
+    const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
 }
