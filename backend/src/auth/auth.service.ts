@@ -94,8 +94,18 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('User not found or inactive');
     }
-    return this.sanitizeUser(user);
+    return {
+      user: this.sanitizeUser(user),
+      token: await this.generateToken(user);
+    }
   }
+  async findOrCreateFromGoogle(
+profile: GoogleProfile,
+roleFromState ?: 'student' | 'instructor'
+):Promise<UserEntity>{
+const email = profile.emails ?. [0] ?. value
+}
+
 
 
   private async generateToken(user: UserEntity) {
