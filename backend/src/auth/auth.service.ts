@@ -104,6 +104,26 @@ profile: GoogleProfile,
 roleFromState ?: 'student' | 'instructor'
 ):Promise<UserEntity>{
 const email = profile.emails ?. [0] ?. value
+if(!email) throw new BadRequestException('Missing google profile');
+
+let user = await this.userRepository.findOne({
+  where: {email},
+  relations: ['instructorApplication'] 
+})
+const name = profile.displayName || email.split('@')[0];
+const picture =    profile.photos?.[0]?.value ?? null;
+
+if (!user){
+  const role = roleFromState === 'instructor' ? UserRole.INSTRUCTOR : UserRole.STUDENT;
+  user = this.userRepository.create({
+      name,
+      email,
+      role ,
+      status: UserStatus.ACTIVE,
+      profilePictureUrl: picture,
+      googleId:profile.id
+  })
+}
 }
 
 
