@@ -49,7 +49,7 @@ export class UserEntity {
     passwordHash!: string | null;
 
     @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
-    roll!: UserRole;
+    role!: UserRole;
 
     @Column({ type: 'enum', enum: UserStatus, default: UserStatus.PENDING })
     status!: UserStatus;

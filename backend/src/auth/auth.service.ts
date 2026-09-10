@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../users/entities/user.entity';
@@ -6,14 +6,14 @@ import { InstructorApplicationEntity } from '../users/entities/instuctor-applica
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { UserRole, UserStatus } from 'src/users/enums/users.enms';
+import { UserRole, UserStatus } from '../users/enums/users.enms';
 import { LoginDto } from './dto/login.dto';
 
 export interface GoogleProfile {
-  id: string,
-  displayName?: string,
-  emails?: Array<{ value: string }>,
-  photos?: Array<{ value: string }>
+  id: string;
+  displayName?: string;
+  emails?: Array<{ value: string }>;
+  photos?: Array<{ value: string }>;
 }
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AuthService {
     // step 1: Restrict for dubling email accounts.
     const existingUser = await this.userRepository.findOne({
       where: { email: dto.email },
-    })
+    });
     if (existingUser) {
       throw new ConflictException('Email already exists');
     }
@@ -42,7 +42,7 @@ export class AuthService {
       passwordHash,
       role: dto.role || UserRole.STUDENT,
       status: UserStatus.ACTIVE,
-      emailVerified: true
+      emailVerified: true,
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -50,32 +50,30 @@ export class AuthService {
     return {
       user: this.sanitizeUser(savedUser),
       token,
-    }
-
-
+    };
   }
 
   async login(dto: LoginDto) {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
-    })
+    });
     if (!user) {
       throw new NotFoundException('User not found please register');
     }
     if (user.status !== UserStatus.ACTIVE) {
-      throw new UnauthorizedException('Your account is not active. Please contact with support team')
+      throw new UnauthorizedException('Your account is not active. Please contact with support team');
     }
 
     if (!user.passwordHash) {
-      throw new UnauthorizedException('This account require social login')
+      throw new UnauthorizedException('This account require social login');
     }
 
     const isValidPassword = await bcrypt.compare(
       dto.password,
       user.passwordHash
-    )
+    );
     if (!isValidPassword) {
-      throw new UnauthorizedException('Email or Password is incorrect')
+      throw new UnauthorizedException('Email or Password is incorrect');
     }
 
     user.lastLogin = new Date();
@@ -84,57 +82,60 @@ export class AuthService {
     return {
       user: this.sanitizeUser(savedUser),
       token,
-    }
+    };
   }
+
   async getCurrentUser(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: { instructorApplication: true },
-    })
+    });
     if (!user) {
       throw new NotFoundException('User not found or inactive');
     }
     return {
       user: this.sanitizeUser(user),
-      token: await this.generateToken(user);
-    }
+      token: await this.generateToken(user),
+    };
   }
+
   async findOrCreateFromGoogle(
-profile: GoogleProfile,
-roleFromState ?: 'student' | 'instructor'
-):Promise<UserEntity>{
-const email = profile.emails ?. [0] ?. value
-if(!email) throw new BadRequestException('Missing google profile');
+    profile: GoogleProfile,
+    roleFromState?: 'student' | 'instructor'
+  ): Promise<UserEntity> {
+    const email = profile.emails?.[0]?.value;
+    if (!email) throw new BadRequestException('Missing google profile');
 
-let user = await this.userRepository.findOne({
-  where: {email},
-  relations: ['instructorApplication'] 
-})
-const name = profile.displayName || email.split('@')[0];
-const picture =    profile.photos?.[0]?.value ?? null;
+    let user = await this.userRepository.findOne({
+      where: { email },
+      relations: { instructorApplication: true },
+    });
+    const name = profile.displayName || email.split('@')[0];
+    const picture = profile.photos?.[0]?.value ?? null;
 
-if (!user){
-  const role = roleFromState === 'instructor' ? UserRole.INSTRUCTOR : UserRole.STUDENT;
-  user = this.userRepository.create({
-      name,
-      email,
-      role ,
-      status: UserStatus.ACTIVE,
-      profilePictureUrl: picture,
-      googleId:profile.id
-  })
-}
-}
+    if (!user) {
+      const role = roleFromState === 'instructor' ? UserRole.INSTRUCTOR : UserRole.STUDENT;
+      user = this.userRepository.create({
+        name,
+        email,
+        role,
+        status: UserStatus.ACTIVE,
+        profilePictureUrl: picture,
+        googleId: profile.id,
+      });
+      user = await this.userRepository.save(user);
+    }
 
-
+    return user;
+  }
 
   private async generateToken(user: UserEntity) {
     return this.jwtService.signAsync({
       id: user.id,
       email: user.email,
-      role: user.roll,
-      status: user.status
-    })
+      role: user.role,
+      status: user.status,
+    });
   }
 
   private sanitizeUser(user: UserEntity) {
