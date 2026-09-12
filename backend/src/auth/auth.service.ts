@@ -42,7 +42,7 @@ export class AuthService {
       passwordHash,
       role: dto.role || UserRole.STUDENT,
       status: UserStatus.ACTIVE,
-      emailVerified: true
+      emailVerified: false
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -96,7 +96,7 @@ export class AuthService {
     }
     return {
       user: this.sanitizeUser(user),
-      token: await this.generateToken(user);
+      token: await this.generateToken(user),
     }
   }
   async findOrCreateFromGoogle(
@@ -107,7 +107,7 @@ export class AuthService {
 
     let user = await this.userRepository.findOne({
       where: { email },
-      relations: ['instructorApplication']
+      relations: { instructorApplication: true }
     })
     const name = profile.displayName || email.split('@')[0];
     const picture = profile.photos?.[0]?.value ?? null;
@@ -121,8 +121,19 @@ export class AuthService {
         status: UserStatus.ACTIVE,
         profilePictureUrl: picture,
         googleId: profile.id
-      })
+      });
+      user = await this.userRepository.save(user)
+    } else {
+      user.googleId = profile.id;
+      user.emailVerified = true;
+      user.profilePictureUrl = picture ?? user.profilePictureUrl;
+      user.lastLogin = new Date();
+      user = await this.userRepository.save(user)
     }
+    if (user.status !== UserStatus.ACTIVE) {
+      throw new UnauthorizedException('Your account is not active, Please contact with support team');
+    }
+    return user;
   }
 
 
@@ -131,7 +142,7 @@ export class AuthService {
     return this.jwtService.signAsync({
       id: user.id,
       email: user.email,
-      role: user.roll,
+      role: user.role,
       status: user.status
     })
   }
