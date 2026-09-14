@@ -5,27 +5,29 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google.startegy';
-import { TypeOrmMudule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { InstructorApplicationEntity } from 'src/users/entities/instuctor-application.entity';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtStartegy } from './strategies/jwt.startegy';
 
 @Module({
   imports: [
     ConfigModule,
     PassportModule.register({ session: true }),
     JwtModule.registerAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
-      useFectory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET') || 'secret',
         signOptions: {
           expiresIn: configService.get<string>('JWT_EXPIRES_IN', '24d') as any
         }
       })
     }),
-    TypeOrmMudule.forFeature([UserEntity, InstructorApplicationEntity])
+    TypeOrmModule.forFeature([UserEntity, InstructorApplicationEntity])
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, JwtStartegy, GoogleStrategy],
+  exports: [AuthService, JwtModule, PassportModule]
 })
 export class AuthModule { }
