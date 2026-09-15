@@ -22,8 +22,17 @@ export class AuthController {
     return successResponse('Login successfully', data);
   }
 
-  @Get('me/:id')
-  getCurrentUser(@Param('id') id: string) {
-    return this.authService.getCurrentUser(id);
+  @Get('google')
+  googleAuth() {
+    return 'Google login started'
+  }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.authService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+    return this.authService.update(+id, updateAuthDto);
   }
 }
