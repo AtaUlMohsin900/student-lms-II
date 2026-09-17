@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
@@ -24,15 +24,6 @@ export class AuthController {
 
   @Get('google')
   googleAuth() {
-    return 'Google login started'
-  }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+    return 'Google login started';
   }
 }
