@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus, HttpCode, Patch, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
@@ -25,5 +25,22 @@ export class AuthController {
   @Get('google')
   googleAuth() {
     return 'Google login started';
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const data = await this.authService.findOne(+id);
+    return successResponse('User fetched successfully', data);
+  }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updateAuthDto: any) {
+    const data = await this.authService.update(+id, updateAuthDto);
+    return successResponse('User updated successfully', data);
+  }
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    const data = await this.authService.remove(+id);
+    return successResponse('User deleted successfully', data);
   }
 }
