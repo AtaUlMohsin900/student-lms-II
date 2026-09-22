@@ -99,6 +99,10 @@ export class AuthService {
       token: await this.generateToken(user),
     }
   }
+
+  async refreshToken(userId: string) {
+    return this.getCurrentUser(userId);
+  }
   async findOrCreateFromGoogle(
     profile: GoogleProfile,
     roleFromState?: 'student' | 'instructor'): Promise<UserEntity> {

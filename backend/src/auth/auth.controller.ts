@@ -63,14 +63,29 @@ export class AuthController {
       updatedAt: user.updatedAt,
     };
 
-    return res.redirect(
-      `${frontend}/auth/callback?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userPayload))}`
-    );
+    const redirectUrl = `${frontend}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(userPayload))}`;
+    return res.redirect(redirectUrl);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const data = await this.authService.getCurrentUser(id);
-    return successResponse('User fetched successfully', data);
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async me(@Req() req: Request & { user: { id: string } }) {
+    const data = await this.authService.getCurrentUser(req.user.id);
+    return successResponse('User profile retrieved successfully', data);
+  }
+
+  @Post('refresh')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  async refresh(@Req() req: Request & { user: { id: string } }) {
+    const data = await this.authService.refreshToken(req.user.id);
+    return successResponse('Token refreshed successfully', data);
+  }
+
+  @Post('logout')
+  async logout() {
+    return successResponse('Logout successfully', {
+      notes: 'Please remove the token and user from local storage'
+    })
   }
 }
