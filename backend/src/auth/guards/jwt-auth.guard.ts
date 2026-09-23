@@ -1,0 +1,19 @@
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { AuthGuard } from "@nestjs/passport";
+import { Observable } from "rxjs";
+
+
+
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+    constructor(private readonly reflector: Reflector) { }
+    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        throw new Error("Method not implemented.");
+    }
+    CanActivate(context: ExecutionContext): boolean {
+
+    }
+
+}
