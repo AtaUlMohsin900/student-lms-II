@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
-import { Observable } from "rxjs";
 import { UserStatus } from "src/users/enums/users.enms";
 
 
