@@ -5,7 +5,8 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { successResponse } from '../common/http/response.util';
 import { UserEntity } from '../users/entities/user.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { GoogleAuthGuard } from './guards/google-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 
 @Controller('auth')
@@ -26,13 +27,13 @@ export class AuthController {
   }
 
   @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleAuthGuard)
   googleAuth() {
     return 'Google login started';
   }
 
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleAuthGuard)
   async googleCallback(
     @Req() req: Request & { user: UserEntity },
     @Res() res: Response,
@@ -68,14 +69,14 @@ export class AuthController {
   }
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   async me(@Req() req: Request & { user: { id: string } }) {
     const data = await this.authService.getCurrentUser(req.user.id);
     return successResponse('User profile retrieved successfully', data);
   }
 
   @Post('refresh')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async refresh(@Req() req: Request & { user: { id: string } }) {
     const data = await this.authService.refreshToken(req.user.id);
