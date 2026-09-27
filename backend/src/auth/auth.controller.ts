@@ -7,6 +7,7 @@ import { successResponse } from '../common/http/response.util';
 import { UserEntity } from '../users/entities/user.entity';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ActiveUserGuard } from './guards/active-user.guard';
 
 
 @Controller('auth')
@@ -76,14 +77,14 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard, ActiveUserGuard)
   async refresh(@Req() req: Request & { user: { id: string } }) {
     const data = await this.authService.refreshToken(req.user.id);
     return successResponse('Token refreshed successfully', data);
   }
 
   @Post('logout')
+  @UseGuards(JwtAuthGuard)
   async logout() {
     return successResponse('Logout successfully', {
       notes: 'Please remove the token and user from local storage'

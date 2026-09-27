@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { InstructorApplicationEntity } from 'src/users/entities/instuctor-application.entity';
 import { JwtStartegy } from './strategies/jwt.startegy';
+import { ActiveUserGuard } from './guards/active-user.guard';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { JwtStartegy } from './strategies/jwt.startegy';
     TypeOrmModule.forFeature([UserEntity, InstructorApplicationEntity])
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStartegy, GoogleStrategy],
+  providers: [AuthService, JwtStartegy, GoogleStrategy, ActiveUserGuard],
   exports: [AuthService, JwtModule, PassportModule]
 })
 export class AuthModule { }
