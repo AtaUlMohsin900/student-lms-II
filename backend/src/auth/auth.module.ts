@@ -28,7 +28,7 @@ import { ActiveUserGuard } from './guards/active-user.guard';
     TypeOrmModule.forFeature([UserEntity, InstructorApplicationEntity])
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStartegy, GoogleStrategy, ActiveUserGuard],
+  providers: [AuthService, JwtStartegy, GoogleStrategy],
   exports: [AuthService, JwtModule, PassportModule]
 })
 export class AuthModule { }
