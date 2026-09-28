@@ -59,7 +59,7 @@ export class InstructorApplicationEntity {
     bio!: string | null;
 
     @Column({ name: 'expertise_areas', type: 'text', array: true, default: '{}' })
-    expertiseAreas!: string | null;
+    expertiseAreas!: string[];
 
     @Column({ type: 'text', nullable: true })
     education!: string | null;

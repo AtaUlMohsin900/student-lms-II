@@ -5,6 +5,7 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InstructorApplicationEntity } from './entities/instuctor-application.entity';
 import { InstructorApplicationDto } from './dto/instructor-application.dto';
+import { InstructorApplicationStatus } from './enums/instructor.enmus';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,7 @@ export class UsersService {
   async getProfile(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['instructorApplication']
+      relations: { instructorApplication: true }
     })
     if (!user) throw new NotFoundException('User account not found')
     return this.sanitizeUser(user);
@@ -40,11 +41,22 @@ export class UsersService {
       if (dto.portfolioUrl !== undefined) application.portfolioUrl = dto.portfolioUrl;
       if (dto.linkedinUrl !== undefined) application.linkedinUrl = dto.linkedinUrl;
       if (dto.githubUrl !== undefined) application.githubUrl = dto.githubUrl;
+    } else {
+      application = this.applicationRepository.create({
+        userId,
+        bio: dto.bio,
+        education: dto.education,
+        experienceYears: dto.experienceYears,
+        expertiseAreas: dto.expertiseAreas,
+        portfolioUrl: dto.portfolioUrl,
+        linkedinUrl: dto.linkedinUrl,
+        githubUrl: dto.githubUrl,
+        status: InstructorApplicationStatus.PENDING
+      })
     }
 
 
-    await this.userRepository.save(user);
-    return this.sanitizeUser(user);
+    return await this.applicationRepository.save(application);
   }
   private sanitizeUser(user: UserEntity) {
     const { passwordHash, ...userWithoutPassword } = user;
