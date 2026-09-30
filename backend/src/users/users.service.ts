@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { InstructorApplicationEntity } from './entities/instuctor-application.entity';
 import { InstructorApplicationDto } from './dto/instructor-application.dto';
 import { InstructorApplicationStatus } from './enums/instructor.enmus';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -58,7 +59,7 @@ export class UsersService {
 
     return await this.applicationRepository.save(application);
   }
-  async changePassword(userId: string, dto: changePasswordDto) {
+  async changePassword(userId: string, dto: ChangePasswordDto) {
     const user = await this.userRepository.findOne({ where: { id: userId } })
     if (!user) throw new NotFoundException('User account not found')
     if (!user.passwordHash) throw new UnauthorizedException('Unable to verify your identity. Please contact support or use the reset password flow for Google/Facebook accounts.')
