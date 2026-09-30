@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -57,6 +57,11 @@ export class UsersService {
 
 
     return await this.applicationRepository.save(application);
+  }
+  async changePassword(userId: string, dto: changePasswordDto) {
+    const user = await this.userRepository.findOne({ where: { id: userId } })
+    if (!user) throw new NotFoundException('User account not found')
+    if (!user.passwordHash) throw new UnauthorizedException('Unable to verify your identity. Please contact support or use the reset password flow for Google/Facebook accounts.')
   }
   private sanitizeUser(user: UserEntity) {
     const { passwordHash, ...userWithoutPassword } = user;
