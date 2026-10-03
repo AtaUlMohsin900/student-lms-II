@@ -115,6 +115,13 @@ export class UsersService {
     return { message: 'User deleted successfully' };
   }
 
+  async getApplicationStatus(userId: string) {
+    const application = await this.applicationRepository.findOne({
+      where: { userId },
+    });
+    return application ?? null;
+  }
+
   private sanitizeUser(user: UserEntity) {
     const { passwordHash, ...userWithoutPassword } = user;
     return userWithoutPassword;
