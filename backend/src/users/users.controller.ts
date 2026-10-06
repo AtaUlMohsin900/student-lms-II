@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { DeleteAccountDto } from './dto/delete-account.dto';
+import { InstructorApplicationDto } from './dto/instructor-application.dto';
 import type { JwtUser } from 'src/auth/decorators/current-user.decorator';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { successResponse } from 'src/common/http/response.util';
@@ -21,7 +22,7 @@ export class UsersController {
   @Put('profile')
   async updateProfile(@CurrentUser() user: JwtUser, @Body() dto: UpdateUserDto) {
     const update = await this.usersService.getProfile(user.id)
-    return successResponse('Profile updated successfully', { user: update })
+    return successResponse('Profile updated successfully', { update })
   }
 
   @Post('change-password')
@@ -35,4 +36,11 @@ export class UsersController {
     await this.usersService.deleteAccount(user.id, dto.password)
     return successResponse('Password change successfully', {})
   }
+
+  @Post('instructor-Application')
+  async upsertApplication(@CurrentUser() user: JwtUser, @Body() dto: InstructorApplicationDto) {
+    const application = await this.usersService.upsertInstructorApplication(user.id, dto)
+    return successResponse('Password change successfully', { application })
+  }
+
 }
