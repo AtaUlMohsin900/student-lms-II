@@ -13,7 +13,7 @@ export class CreateUsers1787798489413 implements MigrationInterface {
                     { name: 'name', type: 'varchar', length: '100' },
                     { name: 'email', type: 'varchar', length: '255', isUnique: true },
                     { name: 'password_hash', type: 'varchar', length: '255', isNullable: true },
-                    { name: 'status', type: 'users_status_enum', default: 'pending' },
+                    { name: 'status', type: 'users_status_enum', default: "'pending'" },
                     { name: 'profile_picture_url', type: 'varchar', length: '500', isNullable: true },
                     { name: 'phone', type: 'varchar', length: "20", isNullable: true },
                     { name: 'date_of_birth', type: 'date', isNullable: true },

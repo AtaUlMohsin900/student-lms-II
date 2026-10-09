@@ -3,14 +3,14 @@ import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm
 export class CreateInstructorApplication1787886310448 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TYPE "instructorApplications_status_enum"AS ENUM('pending', 'approved', 'rejected')`)
+        await queryRunner.query(`CREATE TYPE "instructor_applications_status_enum" AS ENUM('pending', 'approved', 'rejected')`)
         await queryRunner.createTable(
             new Table({
                 name: 'instructor_applications',
                 columns: [
                     { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()' },
                     { name: 'user_id', type: 'uuid', isUnique: true },
-                    { name: 'status', type: 'instructorApplications_status_enum', default: 'pending' },
+                    { name: 'status', type: 'instructor_applications_status_enum', default: "'pending'" },
                     { name: 'bio', type: 'text' },
                     { name: 'expertise_areas', type: 'text', isArray: true, default: "'{}'" },
                     { name: 'experience_years', type: 'int', isNullable: true },
@@ -45,7 +45,7 @@ export class CreateInstructorApplication1787886310448 implements MigrationInterf
         const fk = table?.foreignKeys.find((k) => k.columnNames.indexOf('user_id') !== -1);
         if (fk) await queryRunner.dropForeignKey('instructor_applications', fk);
         await queryRunner.dropTable('instructor_applications', true);
-        await queryRunner.query(`DROP TYPE IF EXISTS "instructorApplications_status_enum"`);
+        await queryRunner.query(`DROP TYPE IF EXISTS "instructor_applications_status_enum"`);
 
     }
 

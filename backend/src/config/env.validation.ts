@@ -12,9 +12,9 @@ export const envValidationSchema = Joi.object({
 
   DB_HOST: Joi.string().default('127.0.0.1'),
   DB_PORT: Joi.number().default(5432),
-  DB_USERNAME: Joi.string().default('dheeraj'),
+  DB_USERNAME: Joi.string().default('ataulmohsin'),
   DB_PASSWORD: Joi.string().allow('').default('root'),
-  DB_NAME: Joi.string().default('lms_development'),
+  DB_NAME: Joi.string().default('lms-student'),
   // DB_SSL - 'true' string ko boolean me convert. Cloud DB par SSL enable karta hai.
   DB_SSL: Joi.boolean().truthy('true').falsy('false').default(false),
 
