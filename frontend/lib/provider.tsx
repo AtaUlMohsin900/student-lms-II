@@ -6,12 +6,22 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(
-        new QueryClient()
-    );
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        staleTime: 60 * 1000,
+                        retry: 1,
+                    }
+                }
+            })
+    )
     return (
         <QueryClientProvider client={queryClient}>
-            {children}
+
+            <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
         </QueryClientProvider>
+
     )
 
 }
