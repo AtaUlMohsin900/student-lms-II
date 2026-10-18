@@ -1,3 +1,4 @@
+import { clearAuthState } from "@/features/auth/authStore";
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
@@ -23,6 +24,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
+            clearAuthState();
             window.location.href = '/';
         }
         return Promise.reject(error);
