@@ -190,7 +190,7 @@ export interface CourseApproval {
   status: 'pending' | 'approved' | 'rejected' | 'draft' | 'published';
   reason?: string;
   admin_id?: string;
-  created_at: string;
+  createdAt: string;
   instructor: {
     name: string;
     email: string;
