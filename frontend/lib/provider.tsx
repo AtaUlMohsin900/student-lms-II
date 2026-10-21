@@ -5,7 +5,9 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast';
 import { usePathname } from "next/navigation";
-
+import AuthBootStrap from "@/components/auth/AuthBootStrap";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -22,7 +24,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     )
     return (
         <QueryClientProvider client={queryClient}>
-
+            <AuthBootStrap />
             <LayoutWrapper>
                 {children}
             </LayoutWrapper>
@@ -69,7 +71,9 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     }
     return (
         <>
+            <Header />
             {children}
+            <Footer />
         </>
     )
 }
