@@ -5,7 +5,14 @@ export type ContentType = 'video' | 'article' | 'pdf' | 'quiz';
 export type MediaType = 'thumbnail' | 'video';
 export type CourseLevel = 'beginner' | 'beginner_to_intermediate' | 'intermediate' | 'intermediate_to_advanced' | 'beginner_to_advanced' | 'advanced';
 export type CourseStatus = 'draft' | 'pending' | 'approved' | 'rejected';
-export type UserRole = 'student' | 'instructor' | 'super_admin' | 'admin';
+export const USER_ROLES = {
+  STUDENT: 'student',
+  INSTRUCTOR: 'instructor',
+  SUPER_ADMIN: 'super_admin',
+  ADMIN: 'admin',
+} as const;
+
+export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 export type EnrollmentStatus = 'active' | 'completed' | 'cancelled';
 export type PayoutAccountType = 'saving' | 'current';
 
