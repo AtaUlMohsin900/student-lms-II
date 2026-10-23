@@ -1,6 +1,6 @@
 import { ROLE_DASHBOARD_MAPPING, USER_ROLES_CONFIG } from '@/constants';
 import { useAuthStore } from '@/features/auth/authStore';
-import { GraduationCap } from 'lucide-react';
+import { BookOpen, GraduationCap, Info, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
@@ -44,13 +44,13 @@ function Header() {
                                     key={link.name}
                                     href={link.href}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200${active ? 'text-blue-600 bg-blue-100' : 'text-gray-600 hover: text-blue-600 hover:bg-gray-50'}`                                      
-                                        { Icon && <Icon className='w-4 h-4' />}
+                                        { Icon && <Icon className='w-4 h-4' />}>
                                 </Link>
                      })}
-                </nav>
+                    </nav>
 
+                </div>
             </div>
-        </div>
         </header >
 
 
