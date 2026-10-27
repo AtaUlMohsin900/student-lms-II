@@ -1,9 +1,10 @@
 import { ROLE_DASHBOARD_MAPPING, USER_ROLES_CONFIG, NAV_LINKS } from '@/constants';
 import { useAuthStore } from '@/features/auth/authStore';
-import { BookOpen, GraduationCap, Info, Mail } from 'lucide-react';
+import { BookOpen, GraduationCap, Info, Mail, Shield, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { Button } from '../ui/button';
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,10 +61,45 @@ function Header() {
                             );
                         })}
                     </nav>
+                    <div className='hidden md: flex items-center gap-3'>
+                        {authChecked && !isAuthenticated && (
+                            <Link
+                                href='/signup?role=instructor'
+                            >
+
+                                <Button variant='ghost' size='sm' className=' Otext-purple-600 hover: text-purple-700 hover:bg-purple-50'>
+
+                                    Become an Instructor
+                                </Button>
+                            </Link>
+
+                        )}
+
+                        {authChecked && isAuthenticated ? (
+                            <div className='flex items-center gap-3 pl-3 border-l bordr-gray-200'>
+                                <div className='flex items-center gap-2.5'>
+                                    <div className='w-9 h-9 rounded-full flex items-center justify-center bg-linear-to-br from-gray-100 Ito-gray-200'>
+                                        {user?.role === 'super_admin' ? (
+                                            <Shield className='w-4 h-4 text-gray-600 /> 
+                                        ):user?.role === 'instructor'  ? (
+                                        <BookOpen className=' w-4 h-4 text-purple-600' />
+                                        ):  (
+                                        <User className='w-4 h-4 text-blue-600' />
+                                        )}
+                                    </div>
+                                    <div>
+
+                                    </div>
+
+                                    ) : (
+
+                     )}
+
+                                </div>
+                            </div>
                 </div>
-            </div>
-        </header>
-    );
+                </header>
+                );
 }
 
-export default Header;
+                export default Header;
