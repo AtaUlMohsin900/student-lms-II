@@ -61,45 +61,60 @@ function Header() {
                             );
                         })}
                     </nav>
-                    <div className='hidden md: flex items-center gap-3'>
+                    <div className='hidden md:flex items-center gap-3'>
                         {authChecked && !isAuthenticated && (
                             <Link
                                 href='/signup?role=instructor'
                             >
 
-                                <Button variant='ghost' size='sm' className=' Otext-purple-600 hover: text-purple-700 hover:bg-purple-50'>
-
+                                <Button variant='ghost' size='sm' className='text-purple-600 hover:text-purple-700 hover:bg-purple-50 px-2 py-4'>
                                     Become an Instructor
                                 </Button>
                             </Link>
-
                         )}
 
                         {authChecked && isAuthenticated ? (
-                            <div className='flex items-center gap-3 pl-3 border-l bordr-gray-200'>
+                            <div className='flex items-center gap-3 pl-3 border-l border-gray-200'>
                                 <div className='flex items-center gap-2.5'>
-                                    <div className='w-9 h-9 rounded-full flex items-center justify-center bg-linear-to-br from-gray-100 Ito-gray-200'>
+                                    <div className='w-9 h-9 rounded-full flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200'>
                                         {user?.role === 'super_admin' ? (
-                                            <Shield className='w-4 h-4 text-gray-600 /> 
-                                        ):user?.role === 'instructor'  ? (
-                                        <BookOpen className=' w-4 h-4 text-purple-600' />
-                                        ):  (
-                                        <User className='w-4 h-4 text-blue-600' />
+                                            <Shield className='w-4 h-4 text-gray-600' />
+                                        ) : user?.role === "instructor" ? (
+                                            <BookOpen className='w-4 h-4 text-purple-600' />
+                                        ) : (
+                                            <User className='w-4 h-4 text-blue-600' />
                                         )}
                                     </div>
-                                    <div>
-
+                                    <div className='flex flex-col'>
+                                        <span className='text-xs font-medium text-gray-500'>{getRoleLabel()}</span>
+                                        <span className='text-sm font-semibold text-gray-900 capitalize'>{user?.name}</span>
                                     </div>
-
-                                    ) : (
-
-                     )}
-
+                                    <Link href={getDashboardLink()}>
+                                        <Button size='sm' variant='secondary' className='rounded-lg'>
+                                            Dashboard
+                                        </Button>
+                                    </Link>
                                 </div>
                             </div>
+                        ) : (
+                            <>
+                                <Link href='/login'>
+                                    <Button variant='outline' size='sm' className='rounded-lg'>
+                                        Login
+                                    </Button>
+                                </Link>
+                                <Link href='/signup'>
+                                    <Button variant='default' size='sm' className='rounded-lg'>
+                                        Get Started
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
+                    </div>
                 </div>
-                </header>
-                );
+            </div>
+        </header>
+    );
 }
 
-                export default Header;
+export default Header;
