@@ -1,6 +1,6 @@
 import { ROLE_DASHBOARD_MAPPING, USER_ROLES_CONFIG, NAV_LINKS } from '@/constants';
 import { useAuthStore } from '@/features/auth/authStore';
-import { BookOpen, GraduationCap, Info, Mail, Shield, User } from 'lucide-react';
+import { BookOpen, GraduationCap, Info, Mail, Menu, Shield, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -103,16 +103,68 @@ function Header() {
                                         Login
                                     </Button>
                                 </Link>
-                                <Link href='/signup'>
-                                    <Button variant='default' size='sm' className='rounded-lg'>
-                                        Get Started
-                                    </Button>
-                                </Link>
+
+                                <Button variant='default' size='sm' className='rounded-lg'>
+                                    <Link href='/signup'> Sign UP</Link>
+                                </Button>
+
                             </>
                         )}
                     </div>
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        className="md:hidden rounded-lg"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                        {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </Button>
                 </div>
             </div>
+
+            {isMenuOpen && (
+                <div className="md:hidden border-t border-gray-100 bg-white">
+                    <div className="px-4 py-4 space-y-1">
+                        {NAV_LINKS.map((link) => {
+                            const active = isActive(link.href);
+                            const Icon =
+                                link.href === '/courses' ? BookOpen :
+                                    link.href === '/about' ? Info :
+                                        link.href === '/contact' ? Mail : null;
+
+                            return (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-colors ${active
+                                        ? 'text-blue-600 bg-blue-100'
+                                        : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                                        }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {Icon && <Icon className="w-4 h-4" />}
+                                    {link.name}
+                                </Link>
+                            );
+                        })}
+
+                    </div>
+
+
+                    {authChecked && !isAuthenticated && (
+                        <div className="px-4 pb-4">
+                            <Link href="/signup?role=instructor" onClick={() => setIsMenuOpen(false)}>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="w-full text-purple-600 hover:text-purple-700 hover:bg-purple-50 px-4 py-4">
+                                    Become an Instructor
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
+                </div>
+            )}
         </header>
     );
 }
