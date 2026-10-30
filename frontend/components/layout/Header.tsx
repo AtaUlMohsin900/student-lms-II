@@ -97,18 +97,22 @@ function Header() {
                                 </div>
                             </div>
                         ) : (
-                            <>
-                                <Link href='/login'>
-                                    <Button variant='outline' size='sm' className='rounded-lg'>
-                                        Login
-                                    </Button>
-                                </Link>
+                            <div className='flex items-center gap-2'>
+
+                                <Button
+                                    variant='outline'
+                                    asChild
+                                    className='rounded-lg px-4 py-4'
+                                >
+                                    <Link href='/login'>Sign in</Link>
+                                </Button>
+
 
                                 <Button variant='default' size='sm' className='rounded-lg'>
                                     <Link href='/signup'> Sign UP</Link>
                                 </Button>
 
-                            </>
+                            </div>
                         )}
                     </div>
                     <Button
@@ -152,21 +156,51 @@ function Header() {
 
 
                     {authChecked && !isAuthenticated && (
-                        <div className="px-4 pb-4">
-                            <Link href="/signup?role=instructor" onClick={() => setIsMenuOpen(false)}>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="w-full text-purple-600 hover:text-purple-700 hover:bg-purple-50 px-4 py-4">
-                                    Become an Instructor
-                                </Button>
-                            </Link>
-                        </div>
+                        <Link href="/signup?role=instructor"
+                            className="flex items-center gap-2 px-4 py-3 rounded-xl text-base text-purple-600 hover:bg-purple-50"
+                        >
+                            <GraduationCap className="w-5 h-5" />
+                            Become an Instructor
+
+                        </Link>
                     )}
+                    <div className="pt-4 mt-4 border-t border-gray-100">
+                        {authChecked && isAuthenticated ? (
+                            <div>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    asChild
+                                    className="rounded-lg"
+                                >
+                                    <Link href={getDashboardLink()}>Dashboard</Link>
+                                </Button>
+
+                            </div>
+
+                        ) : (
+                            <div className='space-y-2'>
+
+                                <Button
+                                    variant='outline'
+                                    asChild
+                                    className='rounded-lg w-full'
+                                >
+                                    <Link href='/login'>Sign in</Link>
+                                </Button>
+
+
+                                <Button variant='default' size='sm' className='rounded-lg w-full'>
+                                    <Link href='/signup'> Sign UP</Link>
+                                </Button>
+
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
         </header>
     );
-}
+};
 
 export default Header;
