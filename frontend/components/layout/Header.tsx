@@ -152,54 +152,76 @@ function Header() {
                             );
                         })}
 
-                    </div>
 
 
-                    {authChecked && !isAuthenticated && (
-                        <Link href="/signup?role=instructor"
-                            className="flex items-center gap-2 px-4 py-3 rounded-xl text-base text-purple-600 hover:bg-purple-50"
-                        >
-                            <GraduationCap className="w-5 h-5" />
-                            Become an Instructor
 
-                        </Link>
-                    )}
-                    <div className="pt-4 mt-4 border-t border-gray-100">
-                        {authChecked && isAuthenticated ? (
-                            <div>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    asChild
-                                    className="rounded-lg"
-                                >
-                                    <Link href={getDashboardLink()}>Dashboard</Link>
-                                </Button>
+                        {authChecked && !isAuthenticated && (
+                            <Link href="/signup?role=instructor"
+                                className="flex items-center gap-2 px-4 py-3 rounded-xl text-base text-purple-600 hover:bg-purple-50"
+                            >
+                                <GraduationCap className="w-5 h-5" />
+                                Become an Instructor
 
-                            </div>
-
-                        ) : (
-                            <div className='space-y-2'>
-
-                                <Button
-                                    variant='outline'
-                                    asChild
-                                    className='rounded-lg w-full'
-                                >
-                                    <Link href='/login'>Sign in</Link>
-                                </Button>
-
-
-                                <Button variant='default' size='sm' className='rounded-lg w-full'>
-                                    <Link href='/signup'> Sign UP</Link>
-                                </Button>
-
-                            </div>
+                            </Link>
                         )}
+                        <div className='pt-4 mt-4 border-t border-gray-100'>
+                            {authChecked && isAuthenticated ? (
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50">
+                                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200">
+                                            {user?.role === "super_admin" ? (
+                                                <Shield className="w-4 h-4 @text-red-600" />
+                                            ) : user?.role === "instructor" ? (
+                                                <BookOpen className="w-4 h-4 textpurple-600" />
+                                            ) : (
+                                                <User className="w-4 h-4 text-blue-600" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-900 leading-tight">
+                                                {user?.name}
+                                            </p>
+                                            <p className="text-xs Itext-gray-500">{getRoleLabel()}</p>
+                                        </div>
+                                    </div>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        asChild
+                                        className="rounded-lg"
+                                    >
+                                        <Link onClick={() => setIsMenuOpen(false)} href={getDashboardLink()}>Dashboard</Link>
+                                    </Button>
+
+                                </div>
+
+                            ) : (
+                                <div className='space-y-2'>
+
+                                    <Button
+                                        variant='outline'
+                                        asChild
+                                        className='rounded-lg w-full'
+                                    >
+                                        <Link onClick={() => setIsMenuOpen(false)} href="/login">Sign in</Link>
+                                    </Button>
+
+
+                                    <Button
+                                        asChild
+                                        className='w-full rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-4'
+                                    >
+                                        <Link onClick={() => setIsMenuOpen(false)} href='/signup'> Sign UP</Link>
+                                    </Button>
+
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            )}
-        </header>
+            )
+            }
+        </header >
     );
 };
 
