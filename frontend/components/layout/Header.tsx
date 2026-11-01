@@ -102,13 +102,15 @@ function Header() {
                                 <Button
                                     variant='outline'
                                     asChild
-                                    className='rounded-lg px-4 py-4'
-                                >
+                                    className='rounded-lg px-4 py-4'>
                                     <Link href='/login'>Sign in</Link>
                                 </Button>
 
 
-                                <Button variant='default' size='sm' className='rounded-lg'>
+                                <Button
+                                    variant='default'
+                                    size='sm'
+                                    className='rounded-lg px-4 py-4'>
                                     <Link href='/signup'> Sign UP</Link>
                                 </Button>
 
@@ -201,7 +203,7 @@ function Header() {
                                     <Button
                                         variant='outline'
                                         asChild
-                                        className='rounded-lg w-full'
+                                        className='rounded-xl w-full px-4 py-5'
                                     >
                                         <Link onClick={() => setIsMenuOpen(false)} href="/login">Sign in</Link>
                                     </Button>
@@ -209,7 +211,7 @@ function Header() {
 
                                     <Button
                                         asChild
-                                        className='w-full rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-4'
+                                        className='w-full rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-5'
                                     >
                                         <Link onClick={() => setIsMenuOpen(false)} href='/signup'> Sign UP</Link>
                                     </Button>
