@@ -13,11 +13,11 @@ export const authApiInstance = axios.create({
 });
 
 export const authApi = {
-    login: async (data: LoginData): Promise<Response> => {
+    login: async (data: LoginData): Promise<AuthResponse> => {
         const response = await authApiInstance.post('/auth/login', data)
         return response.data;
     },
-    signup: async (data: SignupData): Promise<Response> => {
+    signup: async (data: SignupData): Promise<AuthResponse> => {
         const response = await authApiInstance.post('/auth/signup', data)
         return response.data;
     },
