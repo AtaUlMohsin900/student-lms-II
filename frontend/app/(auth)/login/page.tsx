@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +10,7 @@ import { Mail, Lock, EyeOff, Eye } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-
+import { GoogleLogoSvg } from "@/components";
 
 function LoginContent() {
     const [showPassword, setShowPassword] = useState(false);
@@ -152,12 +153,47 @@ function LoginContent() {
                             </div>
                             {errors.email && <p className='text-sm text-red-600'>{errors.email}</p>}
                         </div>
+
+                        A
+
+
+
+                        <Button type='submit'
+                            className='w-full'
+                            disabled={loginMutation.isPending}
+                        >
+                            {loginMutation.isPending ? 'Signing in ... ' : 'Sign in'}
+
+                        </Button>
+
+                        <div className='relative'>
+                            <div className='absolute inset-0 flex items-center'>
+                                <span className='w-full border-t border-gray-300' />
+                            </div>
+
+                            <div className='relative flex justify-center text-xs uppercase'>
+                                <span className='bg-white px-2 text-gray-500'>Or Continue with</span>
+                            </div>
+
+                        </div>
+                        V
+
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full"
+                            onClick={handleGoogleLogin}
+                        >
+                            <GoogleLogoSvg className="w-5 h-5 mr-2" />
+
+                            Continue with Google
+                        </Button>
                     </form>
                 </CardContent>
             </Card>
 
 
-        </div>
+        </div >
 
     )
 }
