@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { authApi } from '@/features/auth/authApi';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useMutation } from '@tanstack/react-query';
-import { Mail } from 'lucide-react';
+import { Mail, Lock, EyeOff, Eye } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
