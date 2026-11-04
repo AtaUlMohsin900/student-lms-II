@@ -1,7 +1,11 @@
 'use client'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { authApi } from '@/features/auth/authApi';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useMutation } from '@tanstack/react-query';
+import { Mail } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
@@ -87,19 +91,74 @@ function LoginContent() {
         }
         toast.loading('Signing in ...', { id: 'login' })
         loginMutation.mutate(formData);
-
-        try {
-            await loginMutation.mutateAsync(formData);
-        } catch (error) {
-            // Error handled in onError callback
-        }
     }
 
+    const handleGoogleLogin = () => {
+        toast.loading('Redirecting to google ..', { id: 'google' })
+        authApi.googleLogin();
+    }
 
     return (
-        <div>
+        <div className='min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4'>
+            <Card className='w-full max-w-md ' >
+                <CardHeader className='text-center'>
+                    <CardTitle className='text-2xl font-bold text-gray-900 '>
+                        Welcome Back
+
+                    </CardTitle>
+                    <CardDescription className='text-gray-600'>
+                        Sign in to your Learnhub account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className='space-y-4'>
+                        {errors.general && (
+                            <div className='p-3 bg-red-50 border border-red-200 rounded-lg'>
+                                <p className='text-sm text-red-600'>{errors.general}</p>
+                            </div>
+
+                        )}
+                        <div className='space-y-2'>
+                            <Label htmlFor='email'>Email</Label>
+                            <div className='relative'>
+                                <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <Input
+                                    id='email'
+                                    type='email'
+                                    placeholder='Enter your email'
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    className={`pl-10 pr-10 ${errors.email ? 'border-red-500' : ''} py-4`}
+                                />
+                            </div>
+                            {errors.email && <p className='text-sm text-red-600'>{errors.email}</p>}
+                        </div>
+
+                        <div className='space-y-2'>
+                            <Label htmlFor='password'>Password</Label>
+                            <div className='relative'>
+                                <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <Input
+                                    id='password'
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder='Enter your password'
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    className={`pl-10 pr-10 ${errors.email ? 'border-red-500' : ''} py-4`}
+                                />
+                                <button className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover: text-gray-600'>
+                                    {showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='' />}
+                                </button>
+                            </div>
+                            {errors.email && <p className='text-sm text-red-600'>{errors.email}</p>}
+                        </div>
+                    </form>
+                </CardContent>
+            </Card>
+
 
         </div>
+
     )
 }
 
