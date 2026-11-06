@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { GoogleLogoSvg } from "@/components";
+import Link from 'next/dist/client/link';
 
 function LoginContent() {
     const [showPassword, setShowPassword] = useState(false);
@@ -176,7 +177,6 @@ function LoginContent() {
                             </div>
 
                         </div>
-                        V
 
                         <Button
                             type="button"
@@ -188,6 +188,23 @@ function LoginContent() {
 
                             Continue with Google
                         </Button>
+                        <div className="text-center ">
+                            <span className="Itext-gray-600 text-sm">
+                                Don't have an account ?
+                            </span>
+                            <Link href='/signup' className="text-blue-600 hover: text-blue-700 font-medium">
+                                Sign up
+                            </Link>
+                        </div>
+                        <div className="text-center">
+                            <Link href='/forgot-password' className="text-sm text-blue-600 hover: text-blue-700">
+                                Forgot your password?
+                            </Link>
+
+                        </div>
+
+
+
                     </form>
                 </CardContent>
             </Card>
