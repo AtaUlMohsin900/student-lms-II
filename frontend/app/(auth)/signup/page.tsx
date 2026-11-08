@@ -6,12 +6,12 @@ import { Label } from '@/components/ui/label';
 import { authApi } from '@/features/auth/authApi';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useMutation } from '@tanstack/react-query';
-import { Mail, Lock, EyeOff, Eye } from 'lucide-react';
+import { Mail, Lock, EyeOff, Eye, User } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import Link from 'next/dist/client/link';
-import page from '@/app/page';
+
 
 export function GoogleLogoSvg({ className = "w-5 h-5" }: { className?: string }) {
     return (
@@ -38,7 +38,7 @@ export function GoogleLogoSvg({ className = "w-5 h-5" }: { className?: string })
 
 
 
-function LoginContent() {
+function SignupContent() {
     const [showPassword, setShowPassword] = useState(false);
     const searchParams = useSearchParams();
     const roleFromUrl = searchParams.get('role')
@@ -54,7 +54,7 @@ function LoginContent() {
     const router = useRouter();
     useEffect(() => {
         if (roleFromUrl === 'instructor') {
-            setFormData(prev) => ({ ...prev, role: 'instructor' })
+            setFormData((prev) => ({ ...prev, role: 'instructor' }));
         }
     }, [roleFromUrl])
 
@@ -62,7 +62,7 @@ function LoginContent() {
     const [isRedirecting, setIsRedirecting] = useState(false)
     useEffect(() => {
         if (roleFromUrl === 'instructor') {
-            setFormData((prev) => (...prev, role: 'instructor'))
+            setFormData((prev) => ({ ...prev, role: 'instructor' }))
         }
     }, [roleFromUrl])
 
@@ -90,7 +90,7 @@ function LoginContent() {
             }
         },
         onError: (error: any) => {
-            const errorMessage = error.response.data?.message || 'Login failed please try again'
+            const errorMessage = error.response.data?.message || 'Signup failed please try again'
             toast.error(errorMessage)
             setErrors({ general: errorMessage })
         }
@@ -121,20 +121,29 @@ function LoginContent() {
         setErrors({});
 
         const newErrors: { [key: string]: string } = {};
+        if (!formData.name) newErrors.name = 'Name is required';
         if (!formData.email) newErrors.email = 'Email is required';
         if (!formData.password) newErrors.password = 'Password is required';
+        if (formData.password.length > 6) newErrors.password = 'Password shuld be atleast six charecters';
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Password do not meched'
+        }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
-        toast.loading('Signing in ...', { id: 'login' })
-        loginMutation.mutate(formData);
-    }
+        const { confirmPassword, ...signupData } = formData;
+        toast.loading('creating your account...', { id: 'signup' })
+        signupMutation.mutate(signupData)
+    };
+
+
 
     const handleGoogleLogin = () => {
-        toast.loading('Redirecting to google ..', { id: 'google' })
-        authApi.googleLogin();
+
+        toast.loading('Redirecting to google ..', { id: 'google-signup' })
+        authApi.googleLogin(formData.role);
     }
 
     return (
@@ -142,11 +151,11 @@ function LoginContent() {
             <Card className='w-full max-w-md ' >
                 <CardHeader className='text-center'>
                     <CardTitle className='text-2xl font-bold text-gray-900 '>
-                        Welcome Back
+                        Create Acccount
 
                     </CardTitle>
                     <CardDescription className='text-gray-600'>
-                        Sign in to your Learnhub account
+                        Join LMS and start your journing
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -157,6 +166,21 @@ function LoginContent() {
                             </div>
 
                         )}
+                        <div className='space-y-2'>
+                            <Label htmlFor='name'>Name</Label>
+                            <div className='relative'>
+                                <User className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <Input
+                                    id='name'
+                                    type='text'
+                                    placeholder='Enter your name'
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    className={`pl-10 pr-10 ${errors.name ? 'border-red-500' : ''} py-4`}
+                                />
+                            </div>
+                            {errors.name && <p className='text-sm text-red-600'>{errors.name}</p>}
+                        </div>
                         <div className='space-y-2'>
                             <Label htmlFor='email'>Email</Label>
                             <div className='relative'>
@@ -193,9 +217,9 @@ function LoginContent() {
                         </div>
                         <Button type='submit'
                             className='w-full'
-                            disabled={loginMutation.isPending}
+                            disabled={signupMutation.isPending}
                         >
-                            {loginMutation.isPending ? 'Signing in ... ' : 'Sign in'}
+                            {signupMutation.isPending ? 'Signing in ... ' : 'Sign in'}
 
                         </Button>
 
@@ -247,5 +271,18 @@ function LoginContent() {
     )
 }
 
-export default page;
+const page = () => {
+    return (
+        <Suspense fallback={
+            <div className='min-h-screen flex item-center justify-center bg-gray-50'>
+                <p className='text-gray-600'>Loading...</p>
+            </div>
+        }>
+            <SignupContent />
+
+        </Suspense>
+    )
+}
+
+export default page
 
