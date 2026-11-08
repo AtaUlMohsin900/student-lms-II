@@ -8,10 +8,10 @@ import { useAuthStore } from '@/features/auth/authStore';
 import { useMutation } from '@tanstack/react-query';
 import { Mail, Lock, EyeOff, Eye, User } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import Link from 'next/dist/client/link';
-
+import Link from 'next/link';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export function GoogleLogoSvg({ className = "w-5 h-5" }: { className?: string }) {
     return (
@@ -36,66 +36,55 @@ export function GoogleLogoSvg({ className = "w-5 h-5" }: { className?: string })
     );
 }
 
-
-
 function SignupContent() {
     const [showPassword, setShowPassword] = useState(false);
     const searchParams = useSearchParams();
-    const roleFromUrl = searchParams.get('role')
+    const roleFromUrl = searchParams.get('role');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         confirmPassword: '',
         role: (roleFromUrl === 'instructor' ? 'instructor' : 'student') as 'student' | 'instructor'
-    })
+    });
 
-    const [errors, setErrors] = useState<{ [key: string]: string }>({})
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const router = useRouter();
+
     useEffect(() => {
         if (roleFromUrl === 'instructor') {
             setFormData((prev) => ({ ...prev, role: 'instructor' }));
         }
-    }, [roleFromUrl])
+    }, [roleFromUrl]);
 
     const { setUser, setToken, isAuthenticated, user, authChecked } = useAuthStore();
-    const [isRedirecting, setIsRedirecting] = useState(false)
-    useEffect(() => {
-        if (roleFromUrl === 'instructor') {
-            setFormData((prev) => ({ ...prev, role: 'instructor' }))
-        }
-    }, [roleFromUrl])
+    const [isRedirecting, setIsRedirecting] = useState(false);
 
     const signupMutation = useMutation({
         mutationFn: authApi.signup,
         onSuccess: (data) => {
             if (data.success) {
-
-                toast.success('Account created successfully!, Welecome to LMS')
-                setUser(data.data.user)
-                setToken(data.data.token)
+                toast.success('Account created successfully! Welcome to LMS');
+                setUser(data.data.user);
+                setToken(data.data.token);
                 localStorage.setItem('token', data.data.token);
 
-                setIsRedirecting(true)
+                setIsRedirecting(true);
                 setTimeout(() => {
                     if (data.data.user.role === 'instructor') {
-                        router.push('/instructor/onboarding')
+                        router.push('/instructor/onboarding');
                     } else {
-                        router.push('/instructor/dashboard')
+                        router.push('/instructor/dashboard');
                     }
-
                 }, 100);
-
-
             }
         },
         onError: (error: any) => {
-            const errorMessage = error.response.data?.message || 'Signup failed please try again'
-            toast.error(errorMessage)
-            setErrors({ general: errorMessage })
+            const errorMessage = error.response?.data?.message || 'Signup failed, please try again';
+            toast.error(errorMessage);
+            setErrors({ general: errorMessage });
         }
     });
-
 
     useEffect(() => {
         if (!authChecked || signupMutation.isPending || isRedirecting) {
@@ -104,17 +93,14 @@ function SignupContent() {
 
         if (isAuthenticated && user) {
             if (user.role === 'instructor') {
-                router.push('/instructor/dashboard')
+                router.push('/instructor/dashboard');
             } else if (user.role === 'student') {
-                router.push('/instructor/dashboard')
+                router.push('/instructor/dashboard');
+            } else if (user.role === 'super_admin') {
+                router.push('/admin/dashboard');
             }
-            else if (user.role === 'super_admin') {
-                router.push('/admin/dashboard')
-            }
-
         }
-    }, [authChecked, isAuthenticated, user, router, signupMutation.isPending, isRedirecting])
-
+    }, [authChecked, isAuthenticated, user, router, signupMutation.isPending, isRedirecting]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -124,38 +110,37 @@ function SignupContent() {
         if (!formData.name) newErrors.name = 'Name is required';
         if (!formData.email) newErrors.email = 'Email is required';
         if (!formData.password) newErrors.password = 'Password is required';
-        if (formData.password.length > 6) newErrors.password = 'Password shuld be atleast six charecters';
+        if (formData.password && formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters';
+        }
         if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Password do not meched'
+            newErrors.confirmPassword = 'Passwords do not match';
         }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
+
         const { confirmPassword, ...signupData } = formData;
-        toast.loading('creating your account...', { id: 'signup' })
-        signupMutation.mutate(signupData)
+        toast.loading('Creating your account...', { id: 'signup' });
+        signupMutation.mutate(signupData);
     };
 
-
-
     const handleGoogleLogin = () => {
-
-        toast.loading('Redirecting to google ..', { id: 'google-signup' })
+        toast.loading('Redirecting to Google...', { id: 'google-signup' });
         authApi.googleLogin(formData.role);
-    }
+    };
 
     return (
         <div className='min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4'>
-            <Card className='w-full max-w-md ' >
+            <Card className='w-full max-w-md'>
                 <CardHeader className='text-center'>
-                    <CardTitle className='text-2xl font-bold text-gray-900 '>
-                        Create Acccount
-
+                    <CardTitle className='text-2xl font-bold text-gray-900'>
+                        Create Account
                     </CardTitle>
                     <CardDescription className='text-gray-600'>
-                        Join LMS and start your journing
+                        Join LMS and start your journey
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -164,12 +149,11 @@ function SignupContent() {
                             <div className='p-3 bg-red-50 border border-red-200 rounded-lg'>
                                 <p className='text-sm text-red-600'>{errors.general}</p>
                             </div>
-
                         )}
                         <div className='space-y-2'>
                             <Label htmlFor='name'>Name</Label>
                             <div className='relative'>
-                                <User className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <User className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4' />
                                 <Input
                                     id='name'
                                     type='text'
@@ -184,7 +168,7 @@ function SignupContent() {
                         <div className='space-y-2'>
                             <Label htmlFor='email'>Email</Label>
                             <div className='relative'>
-                                <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4' />
                                 <Input
                                     id='email'
                                     type='email'
@@ -197,41 +181,84 @@ function SignupContent() {
                             {errors.email && <p className='text-sm text-red-600'>{errors.email}</p>}
                         </div>
 
+                        <div className="space-y-2">
+                            <Label>I want to join as</Label>
+                            <RadioGroup
+                                value={formData.role}
+                                onValueChange={(value) => setFormData((prev) => ({ ...prev, role: value as 'student' | 'instructor' }))}
+                                className="flex space-x-4"
+                            >
+                                <div
+                                    className="flex items-center space-x-2 cursor-pointer"
+                                    onClick={() => setFormData((prev) => ({ ...prev, role: 'student' }))}
+                                >
+                                    <RadioGroupItem value="student" id="student" />
+                                    <Label htmlFor="student" className="cursor-pointer">Student</Label>
+                                </div>
+                                <div
+                                    className="flex items-center space-x-2 cursor-pointer"
+                                    onClick={() => setFormData((prev) => ({ ...prev, role: 'instructor' }))}
+                                >
+                                    <RadioGroupItem value="instructor" id="instructor" />
+                                    <Label htmlFor="instructor" className="cursor-pointer">Instructor</Label>
+                                </div>
+                            </RadioGroup>
+                        </div>
+
                         <div className='space-y-2'>
                             <Label htmlFor='password'>Password</Label>
                             <div className='relative'>
-                                <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 [text-gray-400 w-4 h-4' />
+                                <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4' />
                                 <Input
                                     id='password'
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder='Enter your password'
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className={`pl-10 pr-10 ${errors.email ? 'border-red-500' : ''} py-4`}
+                                    className={`pl-10 pr-10 ${errors.password ? 'border-red-500' : ''} py-4`}
                                 />
-                                <button className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover: text-gray-600'>
-                                    {showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='' />}
+                                <button
+                                    type='button'
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600'
+                                >
+                                    {showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
                                 </button>
                             </div>
-                            {errors.email && <p className='text-sm text-red-600'>{errors.email}</p>}
+                            {errors.password && <p className='text-sm text-red-600'>{errors.password}</p>}
                         </div>
-                        <Button type='submit'
+
+                        <div className='space-y-2'>
+                            <Label htmlFor='confirmPassword'>Confirm Password</Label>
+                            <div className='relative'>
+                                <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4' />
+                                <Input
+                                    id='confirmPassword'
+                                    type='password'
+                                    placeholder='Confirm your password'
+                                    value={formData.confirmPassword}
+                                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                    className={`pl-10 pr-10 ${errors.confirmPassword ? 'border-red-500' : ''} py-4`}
+                                />
+                            </div>
+                            {errors.confirmPassword && <p className='text-sm text-red-600'>{errors.confirmPassword}</p>}
+                        </div>
+
+                        <Button
+                            type='submit'
                             className='w-full'
                             disabled={signupMutation.isPending}
                         >
-                            {signupMutation.isPending ? 'Signing in ... ' : 'Sign in'}
-
+                            {signupMutation.isPending ? 'Signing up...' : 'Sign up'}
                         </Button>
 
                         <div className='relative'>
                             <div className='absolute inset-0 flex items-center'>
                                 <span className='w-full border-t border-gray-300' />
                             </div>
-
                             <div className='relative flex justify-center text-xs uppercase'>
                                 <span className='bg-white px-2 text-gray-500'>Or Continue with</span>
                             </div>
-
                         </div>
 
                         <Button
@@ -241,48 +268,34 @@ function SignupContent() {
                             onClick={handleGoogleLogin}
                         >
                             <GoogleLogoSvg className="w-5 h-5 mr-2" />
-
                             Continue with Google
                         </Button>
-                        <div className="text-center ">
-                            <span className="Itext-gray-600 text-sm">
-                                Don't have an account ?
-                            </span>
-                            <Link href='/signup' className="text-blue-600 hover: text-blue-700 font-medium">
-                                Sign up
-                            </Link>
-                        </div>
+
                         <div className="text-center">
-                            <Link href='/forgot-password' className="text-sm text-blue-600 hover: text-blue-700">
-                                Forgot your password?
+                            <span className="text-gray-600 text-sm">
+                                Already have an account?
+                            </span>
+                            <Link href='/login' className="text-blue-600 hover:text-blue-700 font-medium ml-1">
+                                Sign in
                             </Link>
-
                         </div>
-
-
-
                     </form>
                 </CardContent>
             </Card>
-
-
-        </div >
-
-    )
+        </div>
+    );
 }
 
 const page = () => {
     return (
         <Suspense fallback={
-            <div className='min-h-screen flex item-center justify-center bg-gray-50'>
+            <div className='min-h-screen flex items-center justify-center bg-gray-50'>
                 <p className='text-gray-600'>Loading...</p>
             </div>
         }>
             <SignupContent />
-
         </Suspense>
-    )
-}
+    );
+};
 
-export default page
-
+export default page;

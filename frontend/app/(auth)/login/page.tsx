@@ -170,7 +170,7 @@ function LoginContent() {
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                     className={`pl-10 pr-10 ${errors.email ? 'border-red-500' : ''} py-4`}
                                 />
-                                <button className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover: text-gray-600'>
+                                <button type='button' onClick={() => setShowPassword(!showPassword)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover: text-gray-600'>
                                     {showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='' />}
                                 </button>
                             </div>
