@@ -83,7 +83,11 @@ function LoginContent() {
                 localStorage.setItem('token', data.data.token);
 
                 const redirect = searchParams.get('redirect')
-                if (redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//')) {
+                if (
+                    redirectTo &&
+                    redirectTo.startsWith('/') &&
+                    !redirectTo.startsWith('//')
+                ) {
                     router.push(redirectTo);
 
                 } else if (data.data.user.role === 'instructor') {
