@@ -1,4 +1,6 @@
 
+'use client';
+
 import { useAuthStore } from '@/features/auth/authStore';
 import { Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';

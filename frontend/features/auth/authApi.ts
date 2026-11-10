@@ -24,7 +24,7 @@ export const authApi = {
     googleLogin: async (role?: 'student' | 'instructor'):
         Promise<void> => {
         const url = role ?
-            `${API_BASE_URL}/auth/google?role={role}` : `{API_BASE_URL}/auth/google`
+            `${API_BASE_URL}/auth/google?role=${role}` : `${API_BASE_URL}/auth/google`;
         window.location.href = url;
     },
     getCurrentUser: async (): Promise<AuthResponse> => {
