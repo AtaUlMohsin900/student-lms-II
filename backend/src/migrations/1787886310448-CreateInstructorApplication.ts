@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
-export class CreateInstructorApplication1778654397165 implements MigrationInterface {
+export class CreateInstructorApplication1787886310448 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TYPE "instructor_applications_status_enum" AS ENUM('pending', 'approved', 'rejected')`,

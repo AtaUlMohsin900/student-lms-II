@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsers1778653493489 implements MigrationInterface {
+export class CreateUsers1787798489413 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
             `CREATE TYPE "users_role_enum" AS ENUM('super_admin', 'instructor', 'student')`,
