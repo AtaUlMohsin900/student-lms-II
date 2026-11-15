@@ -1,9 +1,10 @@
 import React from 'react'
+import { SECTION_CONTENT } from '@/constants'
 
-function HeroSection() {
+const HeroSection = () => {
     return (
         <section className='relative py-20 lg:py-32 bg-linear-to-br from-blue-50 via-white to-pink-50 overflow-hidden'>
-            <<div className='absolute inset-0 opacity-5'>
+            <div className='absolute inset-0 opacity-5'>
                 <div
                     className='absolute inset-0'
                     style={{
@@ -15,13 +16,13 @@ function HeroSection() {
 
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
                 <div className='text-center max-w-4xl mx-auto'>
-                    <h1 className='text-4xl md: text-6xl lg: text-7xl font-bold Otext-gray-900 mb-6 leading-tight'>
+                    <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight'>
                         {SECTION_CONTENT.HERO.TITLE_START}
-                        <span className='bg-linear-to-r Ofrom-blue-600 to-purple-600 bg-clip-text text-transparent'>
+                        <span className='bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
                             {SECTION_CONTENT.HERO.TITLE_HIGHLIGHT}
                         </span>
                         <br />
-                        <span className=' Otext-gray-700'>
+                        <span className='text-gray-700'>
                             {SECTION_CONTENT.HERO.TITLE_END}
                         </span>
                     </h1>

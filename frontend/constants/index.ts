@@ -37,3 +37,12 @@ export const COURSE_STATUS = {
     APPROVED: 'approved',
     REJECTED: 'rejected',
 };
+
+export const SECTION_CONTENT = {
+    HERO: {
+        TITLE_START: 'Master New Skills with ',
+        TITLE_HIGHLIGHT: 'Expert-Led Online Courses',
+        TITLE_END: 'Anywhere, Anytime',
+        DESCRIPTION: 'Advance your career with industry-recognized courses taught by expert instructors.',
+    },
+};
