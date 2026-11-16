@@ -1,5 +1,8 @@
 import React from 'react'
 import { SECTION_CONTENT } from '@/constants'
+import { Button } from './ui/button'
+import Link from 'next/link'
+import { ArrowRight, Play } from 'lucide-react'
 
 const HeroSection = () => {
     return (
@@ -26,10 +29,27 @@ const HeroSection = () => {
                             {SECTION_CONTENT.HERO.TITLE_END}
                         </span>
                     </h1>
+                    <p className='text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed'>
+                        {SECTION_CONTENT.HERO.SUBTITLE}
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                        <Button asChild size="lg" className="text-lg px-8 py-6 group">
+                            <Link href="/courses">
+                                {SECTION_CONTENT.HERO.CTA_EXPLORE}
+                                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                            </Link>
+                        </Button>
 
+                        <Button variant='outline' asChild size="lg" className="text-lg px-8 py-6 group">
+                            <Link href="/signup">
+                                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
+                                {SECTION_CONTENT.HERO.CTA_GET_STARTED}
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </section >
+        </section>
 
 
 
