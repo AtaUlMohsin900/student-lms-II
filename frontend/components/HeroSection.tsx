@@ -47,6 +47,28 @@ const HeroSection = () => {
                             </Link>
                         </Button>
                     </div>
+
+                    <stat. icon className="w-8 h-8
+</div>
+<div className="text-3xl font-bold
+{stat.value}
+</div>
+<div className="Otext-gray-600">
+{stat. label}
+</div>
+
+{/* stats */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+{HERO_STATS.map((stat) => (
+<div key={stat. label} className="text-center">
+<div className="flex items-center justify-center mb-3">
+Otext-blue-600"/>
+
+text-gray-900 mb-1">
+
+</div>
+
+</div>
                 </div>
             </div>
         </section>
