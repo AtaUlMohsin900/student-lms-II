@@ -1,4 +1,5 @@
 import { UserRole } from '@/lib/types';
+import { Users, BookOpen, Award } from 'lucide-react';
 
 export const USER_ROLES_CONFIG = [
     { value: 'student', label: 'Student' },
@@ -49,3 +50,21 @@ export const SECTION_CONTENT = {
         CTA_GET_STARTED: 'Get Started',
     },
 };
+
+export const HERO_STATS = [
+    {
+        icon: Users,
+        value: '10K+',
+        label: 'Active Students',
+    },
+    {
+        icon: BookOpen,
+        value: '500+',
+        label: 'Quality Courses',
+    },
+    {
+        icon: Award,
+        value: '99%',
+        label: 'Success Rate',
+    },
+];
