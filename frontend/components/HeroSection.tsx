@@ -2,7 +2,7 @@ import React from 'react'
 import { SECTION_CONTENT, HERO_STATS } from '@/constants'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight, Play, Star } from 'lucide-react'
 
 const HeroSection = () => {
     return (
@@ -64,6 +64,19 @@ const HeroSection = () => {
                             </div>
                         ))}
                     </div>
+
+                    <div className="flex items-center space-x-1">
+                        <div className="flex items-center space-x-1">
+                            {[...Array(4)].map((_, i) => (
+                                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                            ))}
+                            <span className="text-sm">
+                                {SECTION_CONTENT.HERO.RATING}
+                            </span>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </section>

@@ -48,6 +48,7 @@ export const SECTION_CONTENT = {
         DESCRIPTION: 'Advance your career with industry-recognized courses taught by expert instructors.',
         CTA_EXPLORE: 'Explore Courses',
         CTA_GET_STARTED: 'Get Started',
+        RATING: '4.9/5 from over 10,000+ reviews',
     },
 };
 
