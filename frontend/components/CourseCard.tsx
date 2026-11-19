@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CourseCard() {
+const CourseCard = () => {
     return (
         <div>CourseCard</div>
     )

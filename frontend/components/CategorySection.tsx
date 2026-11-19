@@ -1,9 +1,9 @@
 import React from 'react'
 
-function categorySection() {
+const CategorySection = () => {
     return (
-        <div>categorySection</div>
+        <div>CategorySection</div>
     )
 }
 
-export default categorySection
+export default CategorySection
