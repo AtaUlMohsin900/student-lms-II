@@ -5,10 +5,12 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from './ui/carousel'
-import { SECTION_CONTENT, TESTIMONIALS } from '@/constants'
+import { HERO_STATS, SECTION_CONTENT, TESTIMONIALS } from '@/constants'
 import { Card, CardContent, CardFooter } from './ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Quote, Star } from 'lucide-react'
+import { Button } from './ui/button'
+import Link from 'next/link'
 
 const TestimonialSection = () => {
     return (
@@ -88,6 +90,69 @@ const TestimonialSection = () => {
                         <CarouselPrevious className='left-0' />
                         <CarouselNext className='right-0' />
                     </Carousel>
+                </div>
+                <Card className="mt-20">
+                    <CardContent className="p-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                            <div>
+                                <div className="text-3xl font-bold text-blue-600 mb-2">
+                                    {HERO_STATS[0].value}
+                                </div>
+                                <div className="text-gray-600">{HERO_STATS[0].label}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="text-3xl font-bold text-purple-600 mb-2">
+                                    {HERO_STATS[1].value}
+                                </div>
+                                <div className="text-gray-600">{HERO_STATS[1].label}
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div className="text-3xl font-bold text-green-600 mb-2">
+                                    10K+
+                                </div>
+                                <div className="text-gray-600">Courses Available
+                                </div>
+                            </div>
+                            <div>
+                                <div className="text-3xl font-bold text-orange-600 mb-2">
+                                    4.9/5
+                                </div>
+                                <div className="text-gray-600">Average Rating
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <div className="text-center mt-16">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                        {SECTION_CONTENT.TESTIMONIALS.CTA_TITLE}
+                    </h3>
+
+                    <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                        {SECTION_CONTENT.TESTIMONIALS.CTA_SUBTITLE}
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Button size='lg' asChild className="px-4 py-5">
+                            <Link href='/signup'>
+                                {SECTION_CONTENT.TESTIMONIALS.CTA_PRIMARY}
+                            </Link>
+                        </Button>
+
+                        <Button variant='outline' size='lg' asChild className="px-4 py-5">
+                            <Link href='/courses'>
+                                {SECTION_CONTENT.TESTIMONIALS.CTA_SECONDARY}
+                            </Link>
+                        </Button>
+                    </div>
+
+
                 </div>
             </div >
         </section >

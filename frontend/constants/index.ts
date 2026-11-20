@@ -61,6 +61,10 @@ export const SECTION_CONTENT = {
     TESTIMONIALS: {
         TITLE: 'What Our Students Say',
         SUBTITLE: 'Hear from learners who transformed their careers with our courses',
+        CTA_TITLE: 'Ready to Start Your Learning Journey?',
+        CTA_SUBTITLE: 'Join thousands of students and begin learning from top instructors today.',
+        CTA_PRIMARY: 'Get Started for Free',
+        CTA_SECONDARY: 'Browse All Courses',
     },
 };
 
