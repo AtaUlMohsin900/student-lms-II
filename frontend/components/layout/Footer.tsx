@@ -1,6 +1,6 @@
 import { GraduationCap, Mail, MapPin, Phone } from 'lucide-react'
 import React from 'react'
-import { GLOBAL_CONSTANTS, SECTION_CONTENT, FOOTER_LINKS } from '@/constants'
+import { GLOBAL_CONSTANTS, SECTION_CONTENT, FOOTER_LINKS, SOCIAL_LINKS } from '@/constants'
 import Link from 'next/link'
 
 const Footer = () => {
@@ -90,10 +90,10 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
-                <div className='border-t Oborder-gray-800 mt-12 pt-8'>
-                    <div className='flex flex-col md: flex-row items-center justify-between'>
+                <div className='border-t border-gray-800 mt-12 pt-8'>
+                    <div className='flex flex-col md:flex-row items-center justify-between'>
                         <p className='text-gray-400 text-sm'>
-                            {currentyear} {GLOBAL_CONSTANTS.PLATFORM_NAME}. {SECTION_CONTENT.FOOTER.RIGHTS_RESERVED}
+                            {new Date().getFullYear()} {GLOBAL_CONSTANTS.PLATFORM_NAME}. {SECTION_CONTENT.FOOTER.RIGHTS_RESERVED}
                         </p>
 
                         <div className="flex items-center space-x-4 mt-4 md:mt-0">
@@ -101,17 +101,17 @@ const Footer = () => {
                                 <Link
                                     key={social.name}
                                     href={social.href}
-                                    className='text-gray-400 aria-label={social. name} hover: text-white transition-colors duration-200 p-2 Ohover:bg-gray-800 rounded-lg'>
-
+                                    aria-label={social.name}
+                                    className='text-gray-400 hover:text-white transition-colors duration-200 p-2 hover:bg-gray-800 rounded-lg'
+                                >
                                     <social.icon className="w-5 h-5" />
                                 </Link>
-
+                            ))}
+                        </div>
                     </div>
-                    </div>
-                </div >
-
-            </div >
-        </footer >
+                </div>
+            </div>
+        </footer>
     )
 }
 

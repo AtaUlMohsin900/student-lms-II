@@ -1,5 +1,5 @@
-import { UserRole } from '@/lib/types';
-import { Users, BookOpen, Award, Github, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { Users, BookOpen, Award } from 'lucide-react';
+import { FaGithub, FaLinkedinIn, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 
 export const USER_ROLES_CONFIG = [
     { value: 'student', label: 'Student' },
@@ -78,10 +78,10 @@ export const SECTION_CONTENT = {
 };
 
 export const SOCIAL_LINKS = [
-    { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
-    { name: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-    { name: 'GitHub', href: 'https://github.com', icon: Github },
-    { name: 'YouTube', href: 'https://youtube.com', icon: Youtube },
+    { name: 'Twitter', href: 'https://twitter.com', icon: FaXTwitter },
+    { name: 'LinkedIn', href: 'https://linkedin.com', icon: FaLinkedinIn },
+    { name: 'GitHub', href: 'https://github.com', icon: FaGithub },
+    { name: 'YouTube', href: 'https://youtube.com', icon: FaYoutube },
 ];
 
 export const FOOTER_LINKS = {
