@@ -1,5 +1,5 @@
 import { UserRole } from '@/lib/types';
-import { Users, BookOpen, Award } from 'lucide-react';
+import { Users, BookOpen, Award, Github, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 export const USER_ROLES_CONFIG = [
     { value: 'student', label: 'Student' },
@@ -66,6 +66,46 @@ export const SECTION_CONTENT = {
         CTA_PRIMARY: 'Get Started for Free',
         CTA_SECONDARY: 'Browse All Courses',
     },
+    FOOTER: {
+        CATEGORIES: {
+            PLATFORM: 'Platform',
+            COMMUNITY: 'Community',
+            RESOURCES: 'Resources',
+            LEGAL: 'Legal',
+        },
+        RIGHTS_RESERVED: 'All rights reserved.',
+    },
+};
+
+export const SOCIAL_LINKS = [
+    { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
+    { name: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
+    { name: 'GitHub', href: 'https://github.com', icon: Github },
+    { name: 'YouTube', href: 'https://youtube.com', icon: Youtube },
+];
+
+export const FOOTER_LINKS = {
+    platform: [
+        { name: 'Browse Courses', href: '/courses' },
+        { name: 'Become an Instructor', href: '/instructor/apply' },
+        { name: 'Pricing Plans', href: '/pricing' },
+        { name: 'FAQs', href: '/faq' },
+    ],
+    resources: [
+        { name: 'Documentation', href: '/docs' },
+        { name: 'Tutorials', href: '/tutorials' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Help Center', href: '/help' },
+    ],
+    community: [
+        { name: 'Community', href: '/community' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Events', href: '/events' },
+    ],
+    legal: [
+        { name: 'Privacy Policy', href: '/privacy' },
+        { name: 'Terms of Service', href: '/terms' },
+    ],
 };
 
 export const HERO_STATS = [
@@ -115,3 +155,14 @@ export const TESTIMONIALS = [
         rating: 5,
     },
 ];
+
+export const GLOBAL_CONSTANTS = {
+    PLATFORM_NAME: 'LearnHub',
+    TAGLINE: 'Empowering learners worldwide with accessible, high-quality online education.',
+    COPYRIGHT: '© 2026 LearnHub. All rights reserved.',
+    CONTACT: {
+        EMAIL: 'support@learnhub.com',
+        PHONE: '+1 (555) 123-4567',
+        ADDRESS: '123 Learning Way, Education City',
+    },
+};
